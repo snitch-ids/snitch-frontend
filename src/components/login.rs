@@ -1,15 +1,15 @@
 use std::ops::Deref;
-use std::rc::Rc;
+
 use yew::{Callback};
-use content::PostPart;
+
 use yew::prelude::*;
-use yew_router::prelude::*;
+
 use web_sys;
 use web_sys::HtmlInputElement;
 use wasm_bindgen::JsCast;
 
-use crate::generator::Generated;
-use crate::{content, Route};
+
+use crate::{content};
 
 
 #[derive(Clone, PartialEq, Properties)]

@@ -1,13 +1,13 @@
-use std::rc::Rc;
+
 use web_sys::console::log_1;
 use yew::{Callback};
-use content::PostPart;
+
 use yew::prelude::*;
-use yew_router::prelude::*;
+
 use reqwasm::http::Request;
 use serde::Serialize;
 use crate::components::login::Login;
-use crate::{content, Route};
+use crate::{content};
 
 
 #[derive(Serialize)]
@@ -31,7 +31,7 @@ pub fn LoginPage() -> Html {
 
     let username_static = "asdf".to_string();
     let on_button_clicked = Callback::from(|value: String| {
-        let login_request = LoginRequest{ username: value, password: "testpass".to_string() };
+        let _login_request = LoginRequest{ username: value, password: "testpass".to_string() };
         wasm_bindgen_futures::spawn_local(async move {
             let backend_url = "http://127.0.0.1:8081";
             log_1(&"calling url".to_string().into());
