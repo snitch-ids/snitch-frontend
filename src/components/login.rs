@@ -15,7 +15,7 @@ use crate::{content, Route};
 #[derive(Clone, PartialEq, Properties)]
 pub struct Props {
     pub username: String,
-    pub on_button_clicked: Callback<()>
+    pub on_button_clicked: Callback<String>
 }
 
 #[function_component]
@@ -33,9 +33,10 @@ pub fn Login(props: &Props) -> Html {
     let onclick = props.on_button_clicked.clone();
     let submit = Callback::from(move |_| {
         let greeting = String::from(format!("callback called"));
+        let username: String = text_value_state_confirm.deref().into();
         web_sys::console::log_1(&greeting.into());
-        web_sys::console::log_1(&text_value_state_confirm.deref().into());
-        onclick.emit(());
+        // web_sys::console::log_1(&username.into());
+        onclick.emit(username);
     });
 
     html! {
