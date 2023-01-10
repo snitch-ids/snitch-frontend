@@ -1,16 +1,27 @@
 use std::ops::Deref;
 
-use yew::Callback;
-
-use yew::prelude::*;
-
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::JsCast;
 use web_sys;
 use web_sys::HtmlInputElement;
+use yew::prelude::*;
+use yew::Callback;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct Props {
     pub on_button_clicked: Callback<String>,
+}
+
+#[derive(Serialize, Debug)]
+pub struct LoginRequest {
+    pub username: String,
+    pub password: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct LoginResponse {
+    pub access_token: String,
+    pub refresh_token: String,
 }
 
 #[function_component]
@@ -37,7 +48,7 @@ pub fn Login(props: &Props) -> Html {
         // No properties
         <div class="card">
             <div> {"username"}
-                <input type="text" value={"testuser"} onchange={onchange}/>
+                <input type="text" onchange={onchange}/>
             </div>
             <button onclick={submit}>
                 { "login" }

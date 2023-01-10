@@ -4,7 +4,8 @@ use yew::Callback;
 use yew::prelude::*;
 
 use crate::components::login::Login;
-use crate::services::backend::{authenticate, LoginRequest};
+use crate::components::login::LoginRequest;
+use crate::services::backend::authenticate;
 use reqwasm::http::Request;
 use serde::Serialize;
 
