@@ -1,21 +1,16 @@
 use std::ops::Deref;
 
-use yew::{Callback};
+use yew::Callback;
 
 use yew::prelude::*;
 
+use wasm_bindgen::JsCast;
 use web_sys;
 use web_sys::HtmlInputElement;
-use wasm_bindgen::JsCast;
-
-
-use crate::{content};
-
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct Props {
-    pub username: String,
-    pub on_button_clicked: Callback<String>
+    pub on_button_clicked: Callback<String>,
 }
 
 #[function_component]
@@ -35,7 +30,6 @@ pub fn Login(props: &Props) -> Html {
         let greeting = String::from(format!("callback called"));
         let username: String = text_value_state_confirm.deref().into();
         web_sys::console::log_1(&greeting.into());
-        // web_sys::console::log_1(&username.into());
         onclick.emit(username);
     });
 
@@ -43,7 +37,7 @@ pub fn Login(props: &Props) -> Html {
         // No properties
         <div class="card">
             <div> {"username"}
-                <input type="text" name={props.username.clone()} onchange={onchange}/>
+                <input type="text" value={"testuser"} onchange={onchange}/>
             </div>
             <button onclick={submit}>
                 { "login" }

@@ -8,10 +8,10 @@ use crate::components::nav::Nav;
 use crate::pages::author::Author;
 use crate::pages::author_list::AuthorList;
 use crate::pages::home::Home;
+use crate::pages::login::LoginPage;
 use crate::pages::page_not_found::PageNotFound;
 use crate::pages::post::Post;
 use crate::pages::post_list::PostList;
-use crate::pages::login::LoginPage;
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum Route {

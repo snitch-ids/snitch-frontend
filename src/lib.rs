@@ -18,6 +18,7 @@ mod components;
 mod content;
 mod generator;
 mod pages;
+pub mod services;
 
 pub use app::*;
 pub use content::*;
