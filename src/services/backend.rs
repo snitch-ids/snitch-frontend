@@ -1,25 +1,26 @@
 use crate::components::login::{LoginRequest, LoginResponse};
+use crate::pages::message_list::MessagesRequest;
+use gloo::file::futures;
 use gloo::storage;
 use gloo::storage::Storage;
 use reqwasm;
 use reqwasm::http::{Headers, Request};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use serde_json::to_string;
 use std::fmt::format;
-use wasm_cookies::CookieOptions;
-use web_sys;
 use web_sys::console::log_1;
-use web_sys::window;
+use yew::use_state;
 
-const BACKEND_URL: &str = "http://127.0.0.1:8081/login";
+const BACKEND_URL: &str = "http://127.0.0.1:8081";
 
 pub fn authenticate(login_request: LoginRequest) {
     wasm_bindgen_futures::spawn_local(async move {
         log_1(&"calling url".to_string().into());
+        let login_url = format!("{BACKEND_URL}/login");
         let payload = to_string(&login_request).unwrap();
         let mut headers = Headers::new();
         headers.append("Content-Type", "application/json");
-        let response = Request::post(BACKEND_URL)
+        let response = Request::post(&*login_url)
             .headers(headers)
             .body(&payload)
             .send()
@@ -33,4 +34,40 @@ pub fn authenticate(login_request: LoginRequest) {
         storage::LocalStorage::set("access_token", response_json.access_token)
             .expect("TODO: panic message");
     });
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct MessageBackend {
+    pub hostname: String,
+    pub title: String,
+    pub content: String,
+    pub timestamp: String,
+}
+
+pub fn request_messages(hostname: String) -> Vec<()> {
+    let msg = format!("requesting data for hostname {}", hostname);
+    log_1(&msg.into());
+    let messages_request = MessagesRequest { hostname };
+    let cookie: String = storage::LocalStorage::get("access_token").unwrap_or_default();
+    log_1(&cookie.clone().into());
+
+    wasm_bindgen_futures::spawn_local(async move {
+        let payload = to_string(&messages_request).unwrap();
+
+        let mut headers = Headers::new();
+        let messages_url = format!("{BACKEND_URL}/messages/all/");
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", &cookie);
+        let response = Request::post(&*messages_url)
+            .headers(headers)
+            .body(&payload)
+            .send()
+            .await
+            .unwrap();
+        let data = response.json::<Vec<MessageBackend>>().await.unwrap();
+        let msg = format!("received {} messages", data.len());
+        log_1(&msg.into());
+    });
+
+    vec![]
 }
