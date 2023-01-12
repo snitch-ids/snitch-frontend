@@ -9,6 +9,7 @@ use crate::pages::author::Author;
 use crate::pages::author_list::AuthorList;
 use crate::pages::home::Home;
 use crate::pages::login::LoginPage;
+use crate::pages::logout::Logout;
 use crate::pages::message_list::MessageList;
 use crate::pages::page_not_found::PageNotFound;
 use crate::pages::post::Post;
@@ -33,6 +34,8 @@ pub enum Route {
     #[not_found]
     #[at("/404")]
     NotFound,
+    #[at("/logout")]
+    Logout,
 }
 
 #[function_component]
@@ -117,6 +120,9 @@ fn switch(routes: Route) -> Html {
         }
         Route::NotFound => {
             html! { <PageNotFound /> }
+        }
+        Route::Logout => {
+            html! { <Logout /> }
         }
     }
 }

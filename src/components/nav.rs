@@ -1,6 +1,7 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
+use crate::services::backend::authenticated;
 use crate::Route;
 
 #[function_component]
@@ -16,6 +17,13 @@ pub fn Nav() -> Html {
     };
 
     let active_class = if !*navbar_active { "is-active" } else { "" };
+
+    let logged_in = authenticated();
+
+    let (authentication_route, authentication_label) = match logged_in {
+        true => (Route::Logout, "Logout"),
+        false => (Route::LoginPage, "Login"),
+    };
 
     html! {
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
@@ -52,8 +60,8 @@ pub fn Nav() -> Html {
                         <Link<Route> classes={classes!("navbar-item")} to={Route::Messages}>
                             { "Messages" }
                         </Link<Route>>
-                        <Link<Route> classes={classes!("navbar-item")} to={Route::LoginPage}>
-                            { "Login" }
+                        <Link<Route> classes={classes!("navbar-item")} to={authentication_route}>
+                            { authentication_label }
                         </Link<Route>>
                     </div>
                 </div>

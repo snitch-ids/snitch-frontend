@@ -74,3 +74,11 @@ pub async fn request_messages(hostname: String) -> Result<Vec<MessageBackend>, F
 
     data
 }
+
+pub fn clear_session_storage() {
+    storage::LocalStorage::delete("access_token");
+}
+
+pub fn authenticated() -> bool {
+    storage::LocalStorage::get::<String>("access_token").is_ok()
+}
