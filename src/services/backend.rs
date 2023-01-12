@@ -10,6 +10,7 @@ use serde_json::to_string;
 use std::fmt::format;
 use web_sys::console::log_1;
 use yew::use_state;
+use yew_hooks::prelude::*;
 
 const BACKEND_URL: &str = "http://127.0.0.1:8081";
 
@@ -44,30 +45,36 @@ pub struct MessageBackend {
     pub timestamp: String,
 }
 
-pub fn request_messages(hostname: String) -> Vec<()> {
+#[derive(Clone, Debug)]
+pub enum FetchError {
+    NoMessage,
+}
+
+pub async fn request_messages(hostname: String) -> Result<Vec<MessageBackend>, FetchError> {
     let msg = format!("requesting data for hostname {}", hostname);
     log_1(&msg.into());
     let messages_request = MessagesRequest { hostname };
     let cookie: String = storage::LocalStorage::get("access_token").unwrap_or_default();
-    log_1(&cookie.clone().into());
 
-    wasm_bindgen_futures::spawn_local(async move {
-        let payload = to_string(&messages_request).unwrap();
+    let payload = to_string(&messages_request).unwrap();
 
-        let mut headers = Headers::new();
-        let messages_url = format!("{BACKEND_URL}/messages/all/");
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", &cookie);
-        let response = Request::post(&*messages_url)
-            .headers(headers)
-            .body(&payload)
-            .send()
-            .await
-            .unwrap();
-        let data = response.json::<Vec<MessageBackend>>().await.unwrap();
-        let msg = format!("received {} messages", data.len());
-        log_1(&msg.into());
-    });
+    let headers = Headers::new();
+    let messages_url = format!("{BACKEND_URL}/messages/all/");
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", &cookie);
+    let response = Request::post(&*messages_url)
+        .headers(headers)
+        .body(&payload)
+        .send()
+        .await
+        .unwrap();
+    let data = response
+        .json::<Vec<MessageBackend>>()
+        .await
+        .map_err(|e| FetchError::NoMessage);
+    // let msg = format!("received {} messages", data.len());
+    // log_1(&msg.into());
 
-    vec![]
+    // Ok(vec![])
+    data
 }
