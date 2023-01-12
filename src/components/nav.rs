@@ -49,6 +49,9 @@ pub fn Nav() -> Html {
                                 { "Meet the authors" }
                             </Link<Route>>
                         </div>
+                        <Link<Route> classes={classes!("navbar-item")} to={Route::Messages}>
+                            { "Messages" }
+                        </Link<Route>>
                         <Link<Route> classes={classes!("navbar-item")} to={Route::LoginPage}>
                             { "Login" }
                         </Link<Route>>

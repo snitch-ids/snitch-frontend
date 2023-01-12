@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::ops::Deref;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -17,32 +18,6 @@ const TOTAL_PAGES: u32 = u32::MAX / ITEMS_PER_PAGE;
 pub struct MessagesRequest {
     pub(crate) hostname: String,
 }
-
-// #[function_component(Async)]
-// pub fn MessageList() -> Html {
-//     let hostname = "admin".to_string();
-//     let mes = use_async( async move  {request_messages(hostname).await});
-//     let message_vnodes = {
-//         let mut cards = (0..ITEMS_PER_PAGE).map(|seed_offset| {
-//             html! {
-//                 <li class="list-item mb-5">
-//                     <MessageCard />
-//                 </li>
-//             }
-//         });
-//         html! {
-//             <div class="columns">
-//                 <div class="column">
-//                     <ul class="list">
-//                         { for cards }
-//                     </ul>
-//                 </div>
-//             </div>
-//         }
-//     };
-//
-//     message_vnodes
-// }
 
 #[function_component]
 pub fn MessageList() -> Html {
@@ -63,12 +38,23 @@ pub fn MessageList() -> Html {
         );
     }
 
+    let mut message_cards = messages.iter().map(|message| {
+        html! {
+            <li class="list-item mb-5">
+                <MessageCard message={message.clone()}/>
+            </li>
+        }
+    });
+
     html! {
         <>
             <h1>{ "Found messages" }</h1>
-            <div>
-                <p class="h5">{ for (*messages).iter().map(|m| m.hostname.clone()) }</p>
-                <hr />
+            <div class="columns">
+                <div class="column">
+                    <ul class="list">
+                        { for message_cards }
+                    </ul>
+                </div>
             </div>
         </>
     }

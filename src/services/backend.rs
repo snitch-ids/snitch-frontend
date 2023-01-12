@@ -9,8 +9,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::to_string;
 use std::fmt::format;
 use web_sys::console::log_1;
-use yew::use_state;
-use yew_hooks::prelude::*;
+use yew::{use_state, Properties};
 
 const BACKEND_URL: &str = "http://127.0.0.1:8081";
 
@@ -37,7 +36,7 @@ pub fn authenticate(login_request: LoginRequest) {
     });
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, Eq, PartialEq)]
 pub struct MessageBackend {
     pub hostname: String,
     pub title: String,
@@ -72,9 +71,6 @@ pub async fn request_messages(hostname: String) -> Result<Vec<MessageBackend>, F
         .json::<Vec<MessageBackend>>()
         .await
         .map_err(|e| FetchError::NoMessage);
-    // let msg = format!("received {} messages", data.len());
-    // log_1(&msg.into());
 
-    // Ok(vec![])
     data
 }
