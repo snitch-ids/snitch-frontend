@@ -29,7 +29,9 @@ pub fn MessageList() -> Html {
             move |_| {
                 let messages = messages.clone();
                 wasm_bindgen_futures::spawn_local(async move {
-                    let fetched_messages = request_messages("admin".to_string()).await.unwrap();
+                    let fetched_messages = request_messages("admin".to_string())
+                        .await
+                        .unwrap_or_default();
                     messages.set(fetched_messages);
                 });
                 || ()
