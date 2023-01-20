@@ -1,67 +1,25 @@
 use yew::prelude::*;
 
 #[function_component]
-fn InfoTiles() -> Html {
-    html! {
-        <>
-            <div class="tile is-parent">
-                <div class="tile is-child box">
-                    <p class="title">{ "What are yews?" }</p>
-                    <p class="subtitle">{ "Everything you need to know!" }</p>
-
-                    <div class="content">
-                        {r#"
-                            A yew is a small to medium-sized evergreen tree, growing 10 to 20 metres tall, with a trunk up to 2 metres in diameter.
-                            The bark is thin, scaly brown, coming off in small flakes aligned with the stem.
-                            The leaves are flat, dark green, 1 to 4 centimetres long and 2 to 3 millimetres broad, arranged spirally on the stem,
-                            but with the leaf bases twisted to align the leaves in two flat rows either side of the stem,
-                            except on erect leading shoots where the spiral arrangement is more obvious.
-                            The leaves are poisonous.
-                            "#}
-                    </div>
-                </div>
-            </div>
-
-            <div class="tile is-parent">
-                <div class="tile is-child box">
-                    <p class="title">{ "Who are we?" }</p>
-
-                    <div class="content">
-                        { "We're a small team of just 2" }
-                        <sup>{ 64 }</sup>
-                        { " members working tirelessly to bring you the low-effort yew content we all desperately crave." }
-                        <br />
-                        {r#"
-                                We put a ton of effort into fact-checking our posts.
-                                Some say they read like a Wikipedia article - what a compliment!
-                            "#}
-                    </div>
-                </div>
-            </div>
-        </>
-    }
-}
-
-#[function_component]
 pub fn Home() -> Html {
     html! {
-        <div class="tile is-ancestor is-vertical">
-            <div class="tile is-child hero">
-                <div class="hero-body container pb-0">
-                    <h1 class="title is-1">{ "Welcome..." }</h1>
-                    <h2 class="subtitle">{ "...to the best yew content" }</h2>
-                </div>
+       <section class="bg-white dark:bg-gray-900">
+        <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+            <div class="mr-auto place-self-center lg:col-span-7">
+                <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">{"Snitch"}</h1>
+                <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">{"Make sure nobody fumbles with your files."}</p>
+                <a href="#" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                    {"Get started"}
+                    <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </a>
+                <a href="#" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                    {"Learn more"}
+                </a>
             </div>
-
-            <div class="tile is-child">
-                <figure class="image is-3by1">
-                    <img alt="A random image for the input term 'yew'." src="https://source.unsplash.com/random/1200x400/?yew" />
-                </figure>
-            </div>
-
-            <div class="tile is-parent container">
-                <InfoTiles />
+            <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
+                <img src="img/magnifying_glass.svg" alt="mockup"/>
             </div>
         </div>
+    </section>
     }
 }

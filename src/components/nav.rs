@@ -26,11 +26,11 @@ pub fn Nav() -> Html {
     };
 
     html! {
-        <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <h1 class="navbar-item is-size-3">{ "Yew Blog" }</h1>
+        <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
+            <div class="container flex flex-wrap items-center justify-between mx-auto">
+                <h1 class="h-6 mr-3 sm:h-9">{ "Yew Blog" }</h1>
 
-                <button class={classes!("navbar-burger", "burger", active_class)}
+                <button
                     aria-label="menu" aria-expanded="false"
                     onclick={toggle_navbar}
                 >
@@ -38,38 +38,44 @@ pub fn Nav() -> Html {
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                 </button>
-            </div>
-            <div class={classes!("navbar-menu", active_class)}>
-                <div class="navbar-start">
-                    <Link<Route> classes={classes!("navbar-item")} to={Route::Home}>
-                        { "Home" }
-                    </Link<Route>>
-                    <Link<Route> classes={classes!("navbar-item")} to={Route::Posts}>
-                        { "Posts" }
-                    </Link<Route>>
-
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <div class="navbar-link">
-                            { "More" }
-                        </div>
-                        <div class="navbar-dropdown">
-                            <Link<Route> classes={classes!("navbar-item")} to={Route::Authors}>
-                                { "Meet the authors" }
-                            </Link<Route>>
-                        </div>
-                        <Link<Route> classes={classes!("navbar-item")} to={Route::Messages}>
+                <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                  <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li class="navbar-link">
+                        <Link<Route> to={Route::Home}>
+                            { "Home" }
+                        </Link<Route>>
+                    </li>
+                    <li class="navbar-link">
+                        <Link<Route> to={Route::Posts}>
+                            { "Posts" }
+                        </Link<Route>>
+                    </li>
+                    <li class="navbar-link">
+                        <Link<Route> to={Route::Authors}>
+                            { "Meet the authors" }
+                        </Link<Route>>
+                    </li>
+                    <li class="navbar-link">
+                        <Link<Route> to={Route::Messages}>
                             { "Messages" }
                         </Link<Route>>
-                        <Link<Route> classes={classes!("navbar-item")} to={authentication_route}>
+                    </li>
+                    <li class="navbar-link">
+                        <Link<Route> to={authentication_route}>
                             { authentication_label }
                         </Link<Route>>
-                        <Link<Route> classes={classes!("navbar-item")} to={Route::Token}>
+                    </li>
+                    <li class="navbar-link">
+                        <Link<Route> to={Route::Token}>
                             { "Token" }
                         </Link<Route>>
-                        <Link<Route> classes={classes!("navbar-item")} to={Route::TEST}>
+                    </li>
+                    <li class="navbar-link">
+                        <Link<Route> to={Route::TEST}>
                             { "TEST" }
                         </Link<Route>>
-                    </div>
+                    </li>
+                    </ul>
                 </div>
             </div>
         </nav>

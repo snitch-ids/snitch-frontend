@@ -45,12 +45,14 @@ pub fn Login(props: &Props) -> Html {
     });
 
     html! {
-        // No properties
-        <div class="card">
-            <div> {"username"}
+        <div class="card-base">
+        <div>
+            <h5 class="card-title">{"Login"}</h5>
+        </div>
+        <div> {"username"}
                 <input type="text" onchange={onchange}/>
             </div>
-            <button onclick={submit}>
+            <button class="btn" onclick={submit}>
                 { "login" }
             </button>
         </div>
