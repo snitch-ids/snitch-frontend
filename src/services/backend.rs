@@ -113,3 +113,18 @@ pub async fn create_token() -> MessageToken {
         .expect("TODO: panic token");
     token
 }
+
+pub async fn request_tokens() -> Result<Vec<MessageToken>, FetchError> {
+    log_1(&"want token".into());
+    let messages_url = format!("{BACKEND_URL}/token");
+    let response = Request::get(&*messages_url)
+        .credentials(RequestCredentials::Include)
+        .header("Content-Type", "application/json")
+        .send()
+        .await
+        .unwrap();
+    response
+        .json::<Vec<MessageToken>>()
+        .await
+        .map_err(|e| FetchError::NoMessage)
+}
