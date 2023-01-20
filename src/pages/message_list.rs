@@ -50,7 +50,6 @@ pub fn MessageList() -> Html {
 
     html! {
         <>
-            <h1>{ "Found messages" }</h1>
             <div class="columns">
                 <div class="column">
                     <ul class="list">

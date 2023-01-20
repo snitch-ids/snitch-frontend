@@ -15,6 +15,7 @@ use crate::pages::page_not_found::PageNotFound;
 use crate::pages::post::Post;
 use crate::pages::post_list::PostList;
 use crate::pages::test::TEST;
+use crate::pages::token::Token;
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum Route {
@@ -37,6 +38,8 @@ pub enum Route {
     NotFound,
     #[at("/logout")]
     Logout,
+    #[at("/token")]
+    Token,
     #[at("/TEST")]
     TEST,
 }
@@ -126,6 +129,9 @@ fn switch(routes: Route) -> Html {
         }
         Route::Logout => {
             html! { <Logout /> }
+        }
+        Route::Token => {
+            html! { <Token /> }
         }
         Route::TEST => {
             html! { <TEST /> }

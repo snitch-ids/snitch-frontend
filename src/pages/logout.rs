@@ -1,10 +1,10 @@
 use yew::prelude::*;
 
-use crate::services::backend::clear_session_storage;
+use crate::services::backend::logout;
 
 #[function_component]
 pub fn Logout() -> Html {
-    clear_session_storage();
+    logout();
 
     html! {
         <div class="card">

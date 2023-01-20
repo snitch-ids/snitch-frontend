@@ -63,6 +63,9 @@ pub fn Nav() -> Html {
                         <Link<Route> classes={classes!("navbar-item")} to={authentication_route}>
                             { authentication_label }
                         </Link<Route>>
+                        <Link<Route> classes={classes!("navbar-item")} to={Route::Token}>
+                            { "Token" }
+                        </Link<Route>>
                         <Link<Route> classes={classes!("navbar-item")} to={Route::TEST}>
                             { "TEST" }
                         </Link<Route>>
