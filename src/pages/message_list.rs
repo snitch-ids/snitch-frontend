@@ -7,7 +7,6 @@ use reqwasm::http::{Request, Response};
 use yew::{function_component, html, use_effect_with_deps, use_state, Html};
 
 use crate::components::message::MessageCard;
-use crate::components::pagination::{PageQuery, Pagination};
 use crate::services::backend::{request_messages, MessageBackend};
 use crate::Route;
 
