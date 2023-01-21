@@ -14,7 +14,7 @@ pub fn Token() -> Html {
         <div class="card">
             <div class="card-content">
                 <TokenList />
-                <button onclick={create_token_callback}>
+                <button class="btn" onclick={create_token_callback}>
                     { "create token" }
                 </button>
             </div>
