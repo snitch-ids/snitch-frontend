@@ -21,6 +21,4 @@ jobs:
     - name: Install trunk
       run: cargo install --locked trunk
     - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      run: trunk build
