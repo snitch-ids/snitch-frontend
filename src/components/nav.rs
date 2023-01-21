@@ -29,13 +29,13 @@ pub fn Nav() -> Html {
                         </Link<Route>>
                     </li>
                     <li class="navbar-link">
-                        <Link<Route> to={authentication_route}>
-                            { authentication_label }
+                        <Link<Route> to={Route::Token}>
+                            { "Token" }
                         </Link<Route>>
                     </li>
                     <li class="navbar-link">
-                        <Link<Route> to={Route::Token}>
-                            { "Token" }
+                        <Link<Route> to={authentication_route}>
+                            { authentication_label }
                         </Link<Route>>
                     </li>
                     </ul>

@@ -36,7 +36,13 @@ pub fn App() -> Html {
         <BrowserRouter>
             <Nav />
             <main>
-                <Switch<Route> render={switch} />
+                <div class="flex mb-4">
+                    <div class="w-1/6"></div>
+                    <div class="container w-2/3 mt-6">
+                        <Switch<Route> render={switch} />
+                    </div>
+                    <div class="w-1/6"></div>
+                </div>
             </main>
         </BrowserRouter>
         </div>
