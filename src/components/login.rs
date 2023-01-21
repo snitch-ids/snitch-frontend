@@ -38,9 +38,7 @@ pub fn Login(props: &Props) -> Html {
     let text_value_state_confirm = text_value.clone();
     let onclick = props.on_button_clicked.clone();
     let submit = Callback::from(move |_| {
-        let greeting = String::from(format!("callback called"));
         let username: String = text_value_state_confirm.deref().into();
-        web_sys::console::log_1(&greeting.into());
         onclick.emit(username);
     });
 
