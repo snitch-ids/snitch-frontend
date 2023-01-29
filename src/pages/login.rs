@@ -11,10 +11,10 @@ use serde::Serialize;
 
 #[function_component]
 pub fn LoginPage() -> Html {
-    let on_button_clicked = Callback::from(|value: String| {
+    let on_button_clicked = Callback::from(|username: String| {
         let login_request = LoginRequest {
-            username: value,
-            password: "grr".to_string(),
+            username: username,
+            password: "xxxx".to_string(),
         };
         authenticate(login_request);
     });

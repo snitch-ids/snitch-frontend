@@ -38,6 +38,11 @@ pub fn Nav() -> Html {
                             { authentication_label }
                         </Link<Route>>
                     </li>
+                    <li class="navbar-link">
+                        <Link<Route> to={Route::Register}>
+                            { "Register" }
+                        </Link<Route>>
+                    </li>
                     </ul>
                 </div>
             </div>

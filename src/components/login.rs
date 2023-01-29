@@ -26,7 +26,7 @@ pub struct LoginResponse {
 
 #[function_component]
 pub fn Login(props: &Props) -> Html {
-    let text_value = use_state(|| "none".to_string());
+    let text_value = use_state(|| "".to_string());
     let text_value_state = text_value.clone();
 
     let onchange = Callback::from(move |event: Event| {
