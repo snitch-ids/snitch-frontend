@@ -1,18 +1,19 @@
-use std::ops::Deref;
 use crate::components::atomics::text_input::TextInput;
 use serde::{Deserialize, Serialize};
+use std::ops::Deref;
 use wasm_bindgen::JsCast;
 use web_sys;
+use web_sys::console::log_1;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yew::Callback;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct Props {
-    pub on_button_clicked: Callback<String>,
+    pub on_button_clicked: Callback<LoginRequest>,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Default, Clone)]
 pub struct LoginRequest {
     pub username: String,
     pub password: String,
@@ -26,39 +27,39 @@ pub struct LoginResponse {
 
 #[function_component]
 pub fn Login(props: &Props) -> Html {
-    let text_value = use_state(|| "".to_string());
-    let text_value_state = text_value.clone();
+    let state = use_state(LoginRequest::default);
 
-    let onchange = Callback::from(move |event: Event| {
-        let target = event.target().unwrap();
-        let input = target.unchecked_into::<HtmlInputElement>();
-        text_value_state.set(input.value().into());
-    });
+    let username_on_change = {
+        let state = state.clone();
+        Callback::from(move |value: String| {
+            let mut login_request = state.deref().clone();
+            login_request.username = value;
+            state.set(login_request);
+        })
+    };
 
-    let text_value_state_confirm = text_value.clone();
+    let password_on_change = {
+        let state = state.clone();
+        Callback::from(move |value: String| {
+            let mut login_request = state.deref().clone();
+            login_request.password = value;
+            state.set(login_request);
+        })
+    };
+
     let onclick = props.on_button_clicked.clone();
     let submit = Callback::from(move |_| {
-        let username: String = text_value_state_confirm.deref().into();
-        onclick.emit(username);
+        onclick.emit(state.deref().clone());
     });
 
     html! {
         <div class="card-base">
-        // <form>  // form tag does not work
-          <div class="mb-6">
-            <label for="username" class="input-label">{"Username"}</label>
-            <input type="text" onchange={onchange} id="username" class="input" placeholder="username" required=true />
-          </div>
-          <div class="mb-6">
-            <label for="password" class="input-label">{"Your password"}</label>
-            <input type="password" id="password" class="input" required=true />
-          </div>
-          <button type="submit" onclick={submit} class="button">{"Submit"}</button>
-        // <form>
-
         <div class="mb-6">
-            <TextInput id={"password"} />
+            <TextInput id={"username"} on_change={username_on_change}/>
+            <TextInput id={"password"} on_change={password_on_change}/>
         </div>
+        <button type="submit" onclick={submit} class="button">{"Submit"}</button>
+
         </div>
     }
 }
