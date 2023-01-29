@@ -1,4 +1,4 @@
-use crate::components::atomics::text_input::TextInput;
+use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
 use serde::{Deserialize, Serialize};
 use std::ops::Deref;
 use wasm_bindgen::JsCast;
@@ -19,12 +19,6 @@ pub struct LoginRequest {
     pub password: String,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct LoginResponse {
-    pub access_token: String,
-    pub refresh_token: String,
-}
-
 #[function_component]
 pub fn Login(props: &Props) -> Html {
     let state = use_state(LoginRequest::default);
@@ -32,18 +26,18 @@ pub fn Login(props: &Props) -> Html {
     let username_on_change = {
         let state = state.clone();
         Callback::from(move |value: String| {
-            let mut login_request = state.deref().clone();
-            login_request.username = value;
-            state.set(login_request);
+            let mut state_handle = state.deref().clone();
+            state_handle.username = value;
+            state.set(state_handle);
         })
     };
 
     let password_on_change = {
         let state = state.clone();
         Callback::from(move |value: String| {
-            let mut login_request = state.deref().clone();
-            login_request.password = value;
-            state.set(login_request);
+            let mut state_handle = state.deref().clone();
+            state_handle.password = value;
+            state.set(state_handle);
         })
     };
 
@@ -55,8 +49,8 @@ pub fn Login(props: &Props) -> Html {
     html! {
         <div class="card-base">
         <div class="mb-6">
-            <TextInput id={"username"} on_change={username_on_change}/>
-            <TextInput id={"password"} on_change={password_on_change}/>
+            <TextInput id={"username"} input_type={Some(INPUTTYPE::Email)}  on_change={username_on_change}/>
+            <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
         </div>
         <button type="submit" onclick={submit} class="button">{"Submit"}</button>
 

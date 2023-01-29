@@ -1,5 +1,6 @@
-use crate::components::login::{LoginRequest, LoginResponse};
+use crate::components::login::LoginRequest;
 use crate::pages::message_list::MessagesRequest;
+use crate::pages::register::RegisterRequest;
 use reqwasm::http::{Headers, Request};
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
@@ -11,6 +12,25 @@ use web_sys::RequestCredentials;
 const BACKEND_URL: &str = "http://127.0.0.1:8081";
 const USER_COOKIE_NAME: &str = "user_cookie";
 pub type MessageToken = String;
+
+pub fn register_user(register_request: &RegisterRequest) {
+    let request = register_request.clone();
+    wasm_bindgen_futures::spawn_local(async move {
+        log_1(&"calling url".to_string().into());
+        let url = format!("{BACKEND_URL}/register");
+        let payload = to_string(&request).unwrap();
+        let response = Request::post(&*url)
+            .header("Content-Type", "application/json")
+            .header("Accept", "*/*")
+            .credentials(RequestCredentials::Include)
+            .body(&payload)
+            .send()
+            .await
+            .unwrap();
+        let msg = format!("auth status: {}", response.status());
+        log_1(&msg.into());
+    });
+}
 
 pub fn authenticate(login_request: LoginRequest) {
     wasm_bindgen_futures::spawn_local(async move {
