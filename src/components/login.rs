@@ -1,5 +1,5 @@
 use std::ops::Deref;
-
+use crate::components::atomics::text_input::TextInput;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::JsCast;
 use web_sys;
@@ -55,6 +55,10 @@ pub fn Login(props: &Props) -> Html {
           </div>
           <button type="submit" onclick={submit} class="button">{"Submit"}</button>
         // <form>
+
+        <div class="mb-6">
+            <TextInput id={"password"} />
+        </div>
         </div>
     }
 }
