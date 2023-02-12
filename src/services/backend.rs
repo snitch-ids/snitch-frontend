@@ -67,11 +67,7 @@ pub fn logout() {
 }
 
 pub fn authenticated() -> bool {
-    let cookie = wasm_cookies::all_raw();
-    let msg = format!("cookie {:?}", cookie);
-    log_1(&msg.into());
-    // cookie
-    false
+    wasm_cookies::get(USER_COOKIE_NAME).is_some()
 }
 
 #[derive(Debug, Deserialize, Clone, Eq, PartialEq)]
