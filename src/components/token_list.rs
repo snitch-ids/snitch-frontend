@@ -31,9 +31,15 @@ pub fn token_card(props: &Props) -> Html {
     )
 }
 
+#[derive(Properties, PartialEq)]
+pub struct TokenListProps {
+    pub updated: bool,
+}
+
 #[function_component]
-pub fn TokenList() -> Html {
+pub fn TokenList(props: &TokenListProps) -> Html {
     log::info!("Fetching token");
+    let updated = props.updated.clone();
     let tokens = use_state(|| vec![]);
     {
         let tokens = tokens.clone();
@@ -46,7 +52,7 @@ pub fn TokenList() -> Html {
                 });
                 || ()
             },
-            (),
+            updated,
         );
     }
 
