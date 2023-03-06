@@ -9,7 +9,7 @@ use wasm_cookies;
 use web_sys::console::log_1;
 use web_sys::RequestCredentials;
 
-const BACKEND_URL: &str = "http://127.0.0.1:8081";
+const BACKEND_URL: &str = "http://194-195-247-236.ip.linodeusercontent.com";
 const USER_COOKIE_NAME: &str = "user_cookie";
 pub type MessageToken = String;
 
