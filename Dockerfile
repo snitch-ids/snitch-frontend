@@ -1,8 +1,10 @@
 FROM rust:latest AS BUILDER
 
+WORKDIR snitch-frontend
+
 # nvm environment variables
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 4.4.7
+ENV NODE_VERSION 16.16.0
 
 # install nvm
 # https://github.com/creationix/nvm#install-script
@@ -25,11 +27,11 @@ RUN npm -v
 
 RUN npm install -D sass
 RUN rustup target add wasm32-unknown-unknown
+RUN npm install -D tailwindcss
 # RUN npm install -D sass tailwindcss
 RUN cargo install --locked wasm-bindgen-cli
 RUN cargo install --locked trunk
 
-WORKDIR snitch-frontend
 COPY . .
 RUN trunk build
 
