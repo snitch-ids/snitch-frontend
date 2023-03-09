@@ -1,5 +1,5 @@
 FROM rust:latest AS BUILDER
-ARG TARGETPLATFORM
+ARG TARGETPLATFORM="linux/x86_64"
 WORKDIR snitch-frontend
 
 RUN cargo install --locked wasm-bindgen-cli
