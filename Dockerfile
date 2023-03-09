@@ -7,7 +7,11 @@ RUN cargo install --locked trunk
 RUN rustup target add wasm32-unknown-unknown
 COPY . .
 RUN echo "I'm building for $TARGETPLATFORM"
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then mv tailwindcss-linux-arm64 tailwindcss; elif [ "$TARGETPLATFORM" = "linux/x86_64" ]; then mv tailwindcss-linux-x86 tailwindcss; fi
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=linux-arm64; elif [ "$TARGETPLATFORM" = "linux/x86_64" ]; then ARCHITECTURE=linux-x64; fi \
+  && curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-${ARCHITECTURE} \
+  && chmod +x tailwindcss-${ARCHITECTURE} \
+  && mv tailwindcss-${ARCHITECTURE} tailwindcss
+
 RUN trunk build
 
 FROM nginx:latest AS RUNNER
