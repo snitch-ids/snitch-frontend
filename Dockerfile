@@ -1,5 +1,7 @@
 FROM rust:latest AS BUILDER
 ARG TARGETPLATFORM="linux/x86_64"
+ENV SNITCH_BACKEND_URL="api.snitch.cool"
+
 WORKDIR snitch-frontend
 
 RUN cargo install --locked wasm-bindgen-cli
