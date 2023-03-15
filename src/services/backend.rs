@@ -4,11 +4,11 @@ use crate::pages::register::RegisterRequest;
 use reqwasm::http::{Headers, Request};
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
+use std::env;
 use std::fmt::format;
 use wasm_cookies;
 use web_sys::console::log_1;
 use web_sys::RequestCredentials;
-use std::env;
 
 const BACKEND_URL: &str = env!("SNITCH_BACKEND_URL");
 const USER_COOKIE_NAME: &str = "user_cookie";

@@ -1,3 +1,4 @@
+use gloo::timers::callback::{Interval, Timeout};
 use std::ops::Deref;
 use web_sys::console::log_1;
 use yew::Callback;
@@ -6,8 +7,10 @@ use yew::prelude::*;
 
 use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
 use crate::services::backend::{authenticate, register_user};
+use crate::Route;
 use reqwasm::http::Request;
 use serde::Serialize;
+use yew_router::hooks::use_navigator;
 
 #[derive(Serialize, Debug, Default, Clone)]
 pub struct RegisterRequest {
@@ -17,6 +20,8 @@ pub struct RegisterRequest {
 
 #[function_component]
 pub fn Register() -> Html {
+    let navigator = use_navigator().unwrap();
+
     let state = use_state(RegisterRequest::default);
 
     let username_on_change = {
@@ -42,6 +47,7 @@ pub fn Register() -> Html {
         let msg = format!("send register {:?}", x);
         log_1(&msg.into());
         register_user(x.deref());
+        navigator.push(&Route::AfterRegister);
     });
 
     html! {
@@ -58,5 +64,19 @@ pub fn Register() -> Html {
             </div>
             <button onclick={submit} type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{"Create Account"}</button>
         </form>
+    }
+}
+
+#[function_component]
+pub fn AfterRegister() -> Html {
+    let navigator = use_navigator().unwrap();
+
+    Timeout::new(5000, move || navigator.push(&Route::LoginPage)).forget();
+    html! {
+        <div class="flex items-center h-5">
+            <div class="mb-6 text-sm font-medium text-gray-900 dark:text-gray-300">
+                {"Thanks for registering. Check your inbox for a verification mail."}
+            </div>
+        </div>
     }
 }

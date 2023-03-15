@@ -10,7 +10,7 @@ use crate::pages::login::LoginPage;
 use crate::pages::logout::Logout;
 use crate::pages::message_list::MessageList;
 use crate::pages::page_not_found::PageNotFound;
-use crate::pages::register::Register;
+use crate::pages::register::{AfterRegister, Register};
 use crate::pages::token::Token;
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
@@ -30,6 +30,8 @@ pub enum Route {
     Logout,
     #[at("/register")]
     Register,
+    #[at("/afterregister")]
+    AfterRegister,
 }
 
 #[function_component]
@@ -97,6 +99,9 @@ fn switch(routes: Route) -> Html {
         }
         Route::Register => {
             html! { <Register /> }
+        }
+        Route::AfterRegister => {
+            html! { <AfterRegister /> }
         }
     }
 }
