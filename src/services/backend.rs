@@ -17,8 +17,11 @@ pub type MessageToken = String;
 pub fn register_user(register_request: &RegisterRequest) {
     let request = register_request.clone();
     wasm_bindgen_futures::spawn_local(async move {
-        log_1(&"calling url".to_string().into());
         let url = format!("{BACKEND_URL}/register");
+
+        let msg = format!("calling url {url}");
+        log_1(&msg.to_string().into());
+
         let payload = to_string(&request).unwrap();
         let response = Request::post(&*url)
             .header("Content-Type", "application/json")
