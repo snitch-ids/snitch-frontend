@@ -6,8 +6,6 @@ use yew_router::prelude::*;
 use reqwasm::http::{Request, Response};
 use yew::{function_component, html, use_effect_with_deps, use_state, Html};
 
-use crate::components::message::MessageCard;
-use crate::components::pagination::{PageQuery, Pagination};
 use crate::services::backend::{request_tokens, MessageToken};
 use crate::Route;
 
@@ -22,17 +20,26 @@ pub struct Props {
 pub fn token_card(props: &Props) -> Html {
     let token = &props.token;
     html!(
-        <div class="card">
-            <div class="card-content">
-                <h2>{ token }</h2>
-            </div>
-        </div>
+        <>
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                { token }
+            </th>
+            <td class="px-6 py-4">
+                <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">{"Revoke"}</a>
+            </td>
+        </>
     )
 }
 
+#[derive(Properties, PartialEq)]
+pub struct TokenListProps {
+    pub updated: bool,
+}
+
 #[function_component]
-pub fn TokenList() -> Html {
+pub fn TokenList(props: &TokenListProps) -> Html {
     log::info!("Fetching token");
+    let updated = props.updated.clone();
     let tokens = use_state(|| vec![]);
     {
         let tokens = tokens.clone();
@@ -45,26 +52,36 @@ pub fn TokenList() -> Html {
                 });
                 || ()
             },
-            (),
+            updated,
         );
     }
 
     let mut token_cards = tokens.iter().map(|token| {
         html! {
-            <li class="list-item mb-5">
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <TokenCard token={token.clone()}/>
-            </li>
+            </tr>
         }
     });
 
     html! {
         <>
-            <div class="columns">
-                <div class="column">
-                    <ul class="list">
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                {"Token"}
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                {"Action"}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         { for token_cards }
-                    </ul>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </>
     }

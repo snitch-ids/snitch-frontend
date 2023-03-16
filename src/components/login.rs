@@ -1,61 +1,59 @@
-use std::ops::Deref;
-
+use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
 use serde::{Deserialize, Serialize};
+use std::ops::Deref;
 use wasm_bindgen::JsCast;
 use web_sys;
+use web_sys::console::log_1;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yew::Callback;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct Props {
-    pub on_button_clicked: Callback<String>,
+    pub on_button_clicked: Callback<LoginRequest>,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Default, Clone)]
 pub struct LoginRequest {
     pub username: String,
     pub password: String,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct LoginResponse {
-    pub access_token: String,
-    pub refresh_token: String,
-}
-
 #[function_component]
 pub fn Login(props: &Props) -> Html {
-    let text_value = use_state(|| "none".to_string());
-    let text_value_state = text_value.clone();
+    let state = use_state(LoginRequest::default);
 
-    let onchange = Callback::from(move |event: Event| {
-        let target = event.target().unwrap();
-        let input = target.unchecked_into::<HtmlInputElement>();
-        text_value_state.set(input.value().into());
-    });
+    let username_on_change = {
+        let state = state.clone();
+        Callback::from(move |value: String| {
+            let mut state_handle = state.deref().clone();
+            state_handle.username = value;
+            state.set(state_handle);
+        })
+    };
 
-    let text_value_state_confirm = text_value.clone();
+    let password_on_change = {
+        let state = state.clone();
+        Callback::from(move |value: String| {
+            let mut state_handle = state.deref().clone();
+            state_handle.password = value;
+            state.set(state_handle);
+        })
+    };
+
     let onclick = props.on_button_clicked.clone();
     let submit = Callback::from(move |_| {
-        let greeting = String::from(format!("callback called"));
-        let username: String = text_value_state_confirm.deref().into();
-        web_sys::console::log_1(&greeting.into());
-        onclick.emit(username);
+        onclick.emit(state.deref().clone());
     });
 
     html! {
         <div class="card-base">
-        <div>
-            <h5 class="card-title">{"Login"}</h5>
+        <div class="mb-6">
+            <TextInput id={"username"} input_type={Some(INPUTTYPE::Email)}  on_change={username_on_change}/>
+            <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
         </div>
-        <div> {"username"}
-                <input type="text" onchange={onchange}/>
-            </div>
-            <button class="btn" onclick={submit}>
-                { "login" }
-            </button>
-        </div>
+        <button type="submit" onclick={submit} class="button">{"Submit"}</button>
 
+        </div>
     }
 }

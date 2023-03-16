@@ -1,9 +1,14 @@
+use chrono::{DateTime, Utc};
+use std::borrow::ToOwned;
+use std::string::ToString;
 use yew::prelude::*;
+
+const GIT_HASH: &str = env!("GIT_HASH");
 
 #[function_component]
 pub fn Home() -> Html {
     html! {
-       <section class="bg-white dark:bg-gray-900">
+       <section>
         <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
             <div class="mr-auto place-self-center lg:col-span-7">
                 <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">{"Snitch"}</h1>
@@ -20,6 +25,16 @@ pub fn Home() -> Html {
                 <img src="img/magnifying_glass.svg" alt="mockup"/>
             </div>
         </div>
+        <footer class="bg-white dark:bg-gray-900">
+            <div class="mx-auto w-full container p-4 sm:p-6">
+                <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+                <div class="sm:flex sm:items-center sm:justify-between">
+                    <div class="text-gray-500">
+                        {"build: "} {GIT_HASH}
+                    </div>
+                </div>
+            </div>
+        </footer>
     </section>
     }
 }

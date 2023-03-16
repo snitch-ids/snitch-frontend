@@ -11,11 +11,7 @@ use serde::Serialize;
 
 #[function_component]
 pub fn LoginPage() -> Html {
-    let on_button_clicked = Callback::from(|value: String| {
-        let login_request = LoginRequest {
-            username: value,
-            password: "grr".to_string(),
-        };
+    let on_button_clicked = Callback::from(|login_request: LoginRequest| {
         authenticate(login_request);
     });
 
