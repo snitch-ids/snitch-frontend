@@ -1,10 +1,8 @@
 use crate::components::login::LoginRequest;
 use crate::pages::register::RegisterRequest;
-use reqwasm::http::{Headers, Request};
+use reqwasm::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
-use std::env;
-use std::fmt::format;
 use wasm_cookies;
 use web_sys::console::log_1;
 use web_sys::RequestCredentials;

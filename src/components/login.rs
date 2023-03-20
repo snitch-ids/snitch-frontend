@@ -1,10 +1,6 @@
 use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use std::ops::Deref;
-use wasm_bindgen::JsCast;
-use web_sys;
-use web_sys::console::log_1;
-use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yew::Callback;
 
@@ -48,12 +44,11 @@ pub fn Login(props: &Props) -> Html {
 
     html! {
         <div class="card-base">
-        <div class="mb-6">
-            <TextInput id={"username"} input_type={Some(INPUTTYPE::Email)}  on_change={username_on_change}/>
-            <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
-        </div>
-        <button type="submit" onclick={submit} class="button">{"Submit"}</button>
-
+            <div class="mb-6">
+                <TextInput id={"username"} input_type={Some(INPUTTYPE::Email)} on_change={username_on_change}/>
+                <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
+            </div>
+            <button type="submit" onclick={submit} class="button">{"Submit"}</button>
         </div>
     }
 }

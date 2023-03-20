@@ -1,15 +1,8 @@
-use serde::Serialize;
-use std::ops::Deref;
 use yew::prelude::*;
-use yew_router::prelude::*;
 
-use reqwasm::http::{Request, Response};
 use yew::{function_component, html, use_effect_with_deps, use_state, Html};
 
 use crate::services::backend::{request_tokens, MessageToken};
-use crate::Route;
-
-use crate::services::backend::MessageBackend;
 
 #[derive(Clone, Debug, Eq, PartialEq, Properties)]
 pub struct Props {

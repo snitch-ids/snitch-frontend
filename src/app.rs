@@ -39,41 +39,14 @@ pub fn App() -> Html {
     html! {
         <div class="bg-white dark:bg-gray-900 min-h-screen">
         <BrowserRouter>
-            <Nav />
-            <main>
-                <div class="flex mb-4">
-                    <div class="w-1/6"></div>
-                    <div class="container w-2/3 mt-6">
-                        <Switch<Route> render={switch} />
-                    </div>
-                    <div class="w-1/6"></div>
-                </div>
-            </main>
+            <div class="container">
+                <Nav />
+                <main>
+                    <Switch<Route> render={switch} />
+                </main>
+            </div>
         </BrowserRouter>
         </div>
-    }
-}
-
-#[derive(Properties, PartialEq, Eq, Debug)]
-pub struct ServerAppProps {
-    pub url: AttrValue,
-    pub queries: HashMap<String, String>,
-}
-
-#[function_component]
-pub fn ServerApp(props: &ServerAppProps) -> Html {
-    let history = AnyHistory::from(MemoryHistory::new());
-    history
-        .push_with_query(&*props.url, &props.queries)
-        .unwrap();
-
-    html! {
-        <Router history={history}>
-            <Nav />
-            <main>
-                <Switch<Route> render={switch} />
-            </main>
-        </Router>
     }
 }
 

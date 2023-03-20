@@ -1,15 +1,9 @@
-use serde::Serialize;
-use std::ops::Deref;
 use yew::prelude::*;
-use yew_router::prelude::*;
 
-use reqwasm::http::{Request, Response};
-use web_sys::console::log_1;
 use yew::{function_component, html, use_effect_with_deps, use_state, Html};
 
 use crate::components::message::MessageCard;
-use crate::services::backend::{request_hostnames, request_messages, MessageBackend};
-use crate::Route;
+use crate::services::backend::request_messages;
 
 #[derive(Clone, Debug, Eq, PartialEq, Properties)]
 pub struct Props {
@@ -33,7 +27,7 @@ pub fn MessageList(props: &Props) -> Html {
                 });
                 || ()
             },
-            (),
+            props.hostname.clone(),
         );
     }
 
@@ -50,16 +44,13 @@ pub fn MessageList(props: &Props) -> Html {
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
-                                {"Product name"}
+                                {"Time"}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                {"Color"}
+                                {"Title"}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                {"Category"}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {"Price"}
+                                {"Details"}
                             </th>
                         </tr>
                     </thead>

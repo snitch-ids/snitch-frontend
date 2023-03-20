@@ -1,7 +1,6 @@
 use crate::components::token_list::TokenList;
 use crate::services::backend::create_token;
 use yew::prelude::*;
-use yew_router::prelude::*;
 
 #[function_component]
 pub fn Token() -> Html {

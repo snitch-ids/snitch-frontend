@@ -1,4 +1,3 @@
-use web_sys::console::log_1;
 use yew::Callback;
 
 use yew::prelude::*;
@@ -6,8 +5,6 @@ use yew::prelude::*;
 use crate::components::login::Login;
 use crate::components::login::LoginRequest;
 use crate::services::backend::authenticate;
-use reqwasm::http::Request;
-use serde::Serialize;
 
 #[function_component]
 pub fn LoginPage() -> Html {
@@ -16,7 +13,7 @@ pub fn LoginPage() -> Html {
     });
 
     html! {
-        <div class="card">
+        <div class="grid place-items-center">
             <Login on_button_clicked={on_button_clicked}/>
         </div>
 
