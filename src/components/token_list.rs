@@ -56,7 +56,7 @@ pub fn TokenList(props: &TokenListProps) -> Html {
         );
     }
 
-    let mut token_cards = tokens.iter().map(|token| {
+    let token_cards = tokens.iter().map(|token| {
         html! {
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <TokenCard token={token.clone()}/>

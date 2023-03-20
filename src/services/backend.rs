@@ -1,5 +1,4 @@
 use crate::components::login::LoginRequest;
-use crate::pages::message_list::MessagesRequest;
 use crate::pages::register::RegisterRequest;
 use reqwasm::http::{Headers, Request};
 use serde::{Deserialize, Serialize};
@@ -13,6 +12,11 @@ use web_sys::RequestCredentials;
 const BACKEND_URL: &str = env!("SNITCH_BACKEND_URL"); // See Dockerfile
 const USER_COOKIE_NAME: &str = "user_cookie";
 pub type MessageToken = String;
+
+#[derive(Serialize)]
+pub struct MessagesRequest<'a> {
+    pub(crate) hostname: &'a str,
+}
 
 pub fn register_user(register_request: &RegisterRequest) {
     let request = register_request.clone();
@@ -91,17 +95,21 @@ pub async fn request_hostnames() -> Result<Vec<String>, FetchError> {
     let msg = format!("requesting hostnames");
     log_1(&msg.into());
 
-    let messages_url = format!("{BACKEND_URL}/messages/hostnames/");
+    let messages_url = format!("{BACKEND_URL}/messages/hostnames");
     let response = Request::get(&*messages_url)
+        .header("Content-Type", "application/json")
         .credentials(RequestCredentials::Include)
         .send()
         .await
         .unwrap();
 
+    let msg = format!("requesting done {:?}", response.status());
+    log_1(&msg.into());
+
     response
         .json::<Vec<String>>()
         .await
-        .map_err(|e| FetchError::NoMessage)
+        .map_err(|_e| FetchError::NoMessage)
 }
 
 pub async fn request_messages(hostname: &str) -> Result<Vec<MessageBackend>, FetchError> {
@@ -121,7 +129,7 @@ pub async fn request_messages(hostname: &str) -> Result<Vec<MessageBackend>, Fet
     response
         .json::<Vec<MessageBackend>>()
         .await
-        .map_err(|e| FetchError::NoMessage)
+        .map_err(|_e| FetchError::NoMessage)
 }
 
 pub fn test() {
@@ -146,7 +154,7 @@ pub async fn create_token() -> MessageToken {
     let token = response
         .json::<MessageToken>()
         .await
-        .map_err(|e| FetchError::NoMessage)
+        .map_err(|_e| FetchError::NoMessage)
         .expect("TODO: panic token");
     token
 }
@@ -163,5 +171,5 @@ pub async fn request_tokens() -> Result<Vec<MessageToken>, FetchError> {
     response
         .json::<Vec<MessageToken>>()
         .await
-        .map_err(|e| FetchError::NoMessage)
+        .map_err(|_e| FetchError::NoMessage)
 }

@@ -4,24 +4,23 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use reqwasm::http::{Request, Response};
+use web_sys::console::log_1;
 use yew::{function_component, html, use_effect_with_deps, use_state, Html};
 
 use crate::components::message::MessageCard;
-use crate::services::backend::{request_messages, MessageBackend};
+use crate::services::backend::{request_hostnames, request_messages, MessageBackend};
 use crate::Route;
 
-const ITEMS_PER_PAGE: u32 = 10;
-const TOTAL_PAGES: u32 = u32::MAX / ITEMS_PER_PAGE;
-
-#[derive(Serialize)]
-pub struct MessagesRequest <'a> {
-    pub(crate) hostname: &'a str,
+#[derive(Clone, Debug, Eq, PartialEq, Properties)]
+pub struct Props {
+    pub hostname: String,
 }
 
 #[function_component]
-pub fn MessageList() -> Html {
-    log::info!("Fetching data");
-    let hostname = "sdfsdf"; // this needs to be fetched
+pub fn MessageList(props: &Props) -> Html {
+    log::info!("Fetching data for {}", &props.hostname);
+    let hostname = props.hostname.clone();
+
     let messages = use_state(|| vec![]);
     {
         let messages = messages.clone();
@@ -29,9 +28,7 @@ pub fn MessageList() -> Html {
             move |_| {
                 let messages = messages.clone();
                 wasm_bindgen_futures::spawn_local(async move {
-                    let fetched_messages = request_messages(hostname)
-                        .await
-                        .unwrap_or_default();
+                    let fetched_messages = request_messages(&hostname).await.unwrap_or_default();
                     messages.set(fetched_messages);
                 });
                 || ()
@@ -40,7 +37,7 @@ pub fn MessageList() -> Html {
         );
     }
 
-    let mut message_cards = messages.iter().map(|message| {
+    let message_cards = messages.iter().map(|message| {
         html! {
             <MessageCard message={message.clone()}/>
         }

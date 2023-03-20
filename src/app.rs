@@ -8,7 +8,7 @@ use crate::components::nav::Nav;
 use crate::pages::home::Home;
 use crate::pages::login::LoginPage;
 use crate::pages::logout::Logout;
-use crate::pages::message_list::MessageList;
+use crate::pages::messages::Messages;
 use crate::pages::page_not_found::PageNotFound;
 use crate::pages::register::{AfterRegister, Register};
 use crate::pages::token::Token;
@@ -80,7 +80,7 @@ pub fn ServerApp(props: &ServerAppProps) -> Html {
 fn switch(routes: Route) -> Html {
     match routes {
         Route::Messages => {
-            html! { <MessageList /> }
+            html! { <Messages /> }
         }
         Route::LoginPage => {
             html! { <LoginPage /> }
