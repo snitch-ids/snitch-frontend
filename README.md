@@ -7,5 +7,5 @@
 While not strictly necessary, this example should be built in release mode:
 
 ```bash
-trunk serve --release
+SNITCH_BACKEND_URL=http://api.snitch.cool trunk serve
 ```

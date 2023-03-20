@@ -10,7 +10,7 @@ use wasm_cookies;
 use web_sys::console::log_1;
 use web_sys::RequestCredentials;
 
-const BACKEND_URL: &str = env!("SNITCH_BACKEND_URL");
+const BACKEND_URL: &str = env!("SNITCH_BACKEND_URL"); // See Dockerfile
 const USER_COOKIE_NAME: &str = "user_cookie";
 pub type MessageToken = String;
 
@@ -87,7 +87,24 @@ pub enum FetchError {
     NoMessage,
 }
 
-pub async fn request_messages(hostname: String) -> Result<Vec<MessageBackend>, FetchError> {
+pub async fn request_hostnames() -> Result<Vec<String>, FetchError> {
+    let msg = format!("requesting hostnames");
+    log_1(&msg.into());
+
+    let messages_url = format!("{BACKEND_URL}/messages/hostnames/");
+    let response = Request::get(&*messages_url)
+        .credentials(RequestCredentials::Include)
+        .send()
+        .await
+        .unwrap();
+
+    response
+        .json::<Vec<String>>()
+        .await
+        .map_err(|e| FetchError::NoMessage)
+}
+
+pub async fn request_messages(hostname: &str) -> Result<Vec<MessageBackend>, FetchError> {
     let msg = format!("requesting data for hostname {}", hostname);
     log_1(&msg.into());
     let messages_request = MessagesRequest { hostname };

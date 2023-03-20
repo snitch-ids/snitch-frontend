@@ -14,13 +14,14 @@ const ITEMS_PER_PAGE: u32 = 10;
 const TOTAL_PAGES: u32 = u32::MAX / ITEMS_PER_PAGE;
 
 #[derive(Serialize)]
-pub struct MessagesRequest {
-    pub(crate) hostname: String,
+pub struct MessagesRequest <'a> {
+    pub(crate) hostname: &'a str,
 }
 
 #[function_component]
 pub fn MessageList() -> Html {
     log::info!("Fetching data");
+    let hostname = "sdfsdf"; // this needs to be fetched
     let messages = use_state(|| vec![]);
     {
         let messages = messages.clone();
@@ -28,7 +29,7 @@ pub fn MessageList() -> Html {
             move |_| {
                 let messages = messages.clone();
                 wasm_bindgen_futures::spawn_local(async move {
-                    let fetched_messages = request_messages("admin".to_string())
+                    let fetched_messages = request_messages(hostname)
                         .await
                         .unwrap_or_default();
                     messages.set(fetched_messages);
