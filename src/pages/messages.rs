@@ -49,9 +49,9 @@ pub fn Messages() -> Html {
             cb_cb.emit(hostname_cb.clone());
         });
         html! {
-            <p>
-                <button class="button border-solid border-1" {onclick}>{ hostname }</button>
-            </p>
+            <div class="pr-1">
+                <button class="button rounded-none border-1" {onclick}>{ hostname }</button>
+            </div>
         }
     });
 

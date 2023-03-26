@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use yew::prelude::*;
 use yew_router::history::{AnyHistory, History, MemoryHistory};
 use yew_router::prelude::*;
@@ -38,14 +36,18 @@ pub enum Route {
 pub fn App() -> Html {
     html! {
         <div class="bg-white dark:bg-gray-900 min-h-screen">
-        <BrowserRouter>
-            <div class="container">
-                <Nav />
-                <main>
-                    <Switch<Route> render={switch} />
-                </main>
-            </div>
-        </BrowserRouter>
+            <BrowserRouter>
+                <div class="flex">
+                    <div class="flex-none w-34">
+                        <Nav/>
+                    </div>
+                    <div class="flex-auto p-3">
+                        <main>
+                            <Switch<Route> render={switch} />
+                        </main>
+                    </div>
+                </div>
+            </BrowserRouter>
         </div>
     }
 }

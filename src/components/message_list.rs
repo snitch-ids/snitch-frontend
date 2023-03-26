@@ -31,7 +31,7 @@ pub fn MessageList(props: &Props) -> Html {
         );
     }
 
-    let message_cards = messages.iter().map(|message| {
+    let message_cards = messages.iter().rev().map(|message| {
         html! {
             <MessageCard message={message.clone()}/>
         }
