@@ -18,4 +18,5 @@ RUN trunk build
 
 FROM nginx:latest AS RUNNER
 
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=BUILDER /snitch-frontend/dist/ /usr/share/nginx/html/
