@@ -13,7 +13,7 @@ use yew_router::hooks::use_navigator;
 
 #[derive(Serialize, Debug, Default, Clone)]
 pub struct RegisterRequest {
-    pub username: String,
+    pub email: String,
     pub password: String,
 }
 
@@ -23,11 +23,11 @@ pub fn Register() -> Html {
 
     let state = use_state(RegisterRequest::default);
 
-    let username_on_change = {
+    let email_on_change = {
         let state = state.clone();
         Callback::from(move |value: String| {
             let mut state_handle = state.deref().clone();
-            state_handle.username = value;
+            state_handle.email = value;
             state.set(state_handle.into());
         })
     };
@@ -51,10 +51,10 @@ pub fn Register() -> Html {
         <div class="grid place-items-center">
             <form>
                 <div>
-                    <TextInput id={"email"} input_type={Some(INPUTTYPE::Email)} on_change={username_on_change}/>
+                    <TextInput id={"email"} input_type={Some(INPUTTYPE::Email)} on_change={email_on_change}/>
                 </div>
                 <div class="pt-5">
-                    <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
+                    <TextInput id={"password"} placeholder={Some("minimum length: 8")} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
                 </div>
                 <div class="flex items-center h-10">
                     <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required=true />
