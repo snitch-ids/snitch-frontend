@@ -45,7 +45,7 @@ pub fn Login(props: &Props) -> Html {
     html! {
         <div class="card-base">
             <div class="mb-6">
-                <TextInput id={"username"} input_type={Some(INPUTTYPE::Email)} on_change={username_on_change}/>
+                <TextInput id={"email"} input_type={Some(INPUTTYPE::Email)} on_change={username_on_change}/>
                 <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
             </div>
             <button type="submit" onclick={submit} class="button">{"Submit"}</button>

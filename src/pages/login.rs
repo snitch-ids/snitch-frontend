@@ -16,6 +16,5 @@ pub fn LoginPage() -> Html {
         <div class="grid place-items-center">
             <Login on_button_clicked={on_button_clicked}/>
         </div>
-
     }
 }

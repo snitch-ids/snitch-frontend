@@ -43,8 +43,6 @@ pub fn Register() -> Html {
 
     let submit = Callback::from(move |_| {
         let x = state.clone();
-        let msg = format!("send register {:?}", x);
-        log_1(&msg.into());
         register_user(x.deref());
         navigator.push(&Route::AfterRegister);
     });
@@ -53,7 +51,7 @@ pub fn Register() -> Html {
         <div class="grid place-items-center">
             <form>
                 <div>
-                    <TextInput id={"username"} input_type={Some(INPUTTYPE::Email)} on_change={username_on_change}/>
+                    <TextInput id={"email"} input_type={Some(INPUTTYPE::Email)} on_change={username_on_change}/>
                 </div>
                 <div class="pt-5">
                     <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
