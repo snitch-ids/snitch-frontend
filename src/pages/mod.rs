@@ -5,3 +5,4 @@ pub mod messages;
 pub mod page_not_found;
 pub mod register;
 pub mod token;
+pub mod terms;

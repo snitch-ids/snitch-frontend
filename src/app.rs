@@ -10,6 +10,7 @@ use crate::pages::messages::Messages;
 use crate::pages::page_not_found::PageNotFound;
 use crate::pages::register::{AfterRegister, Register};
 use crate::pages::token::Token;
+use crate::pages::terms::Terms;
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum Route {
@@ -30,6 +31,8 @@ pub enum Route {
     Register,
     #[at("/afterregister")]
     AfterRegister,
+    #[at("/terms")]
+    Terms,
 }
 
 #[function_component]
@@ -77,6 +80,9 @@ fn switch(routes: Route) -> Html {
         }
         Route::AfterRegister => {
             html! { <AfterRegister /> }
+        }
+        Route::Terms => {
+            html! { <Terms /> }
         }
     }
 }
