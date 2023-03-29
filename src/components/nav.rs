@@ -14,7 +14,7 @@ pub fn Nav() -> Html {
     };
 
     html! {
-        <nav class="bg-black border-gray-200 px-2 px-4 py-2.5 rounded dark:bg-gray-900">
+        <nav class="border-gray-200 px-2 px-4 py-2.5 rounded dark:bg-gray-900">
               <ul class="border border-gray-100 text-sm font-medium border-0 bg-white dark:bg-gray-800 dark:border-gray-700">
                 <li class="navbar-link">
                     <Link<Route> to={Route::Home}>
