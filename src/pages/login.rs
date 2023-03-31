@@ -1,7 +1,7 @@
-use std::ops::Deref;
-use yew::Callback;
 use serde::Serialize;
+use std::ops::Deref;
 use yew::prelude::*;
+use yew::Callback;
 
 use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
 use crate::services::backend::authenticate;

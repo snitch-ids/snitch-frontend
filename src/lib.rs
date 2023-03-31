@@ -19,7 +19,7 @@ mod content;
 mod generator;
 mod pages;
 pub mod services;
-
+pub mod stores;
 pub use app::*;
 pub use content::*;
 pub use generator::*;

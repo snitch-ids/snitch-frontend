@@ -3,6 +3,7 @@ use yew_router::history::{AnyHistory, History, MemoryHistory};
 use yew_router::prelude::*;
 
 use crate::components::nav::Nav;
+use crate::components::user_details::UserDetailsComponent;
 use crate::pages::home::Home;
 use crate::pages::login::LoginPage;
 use crate::pages::logout::Logout;
@@ -33,6 +34,8 @@ pub enum Route {
     AfterRegister,
     #[at("/terms")]
     Terms,
+    #[at("/user")]
+    UserDetailsComponent,
 }
 
 #[function_component]
@@ -40,7 +43,7 @@ pub fn App() -> Html {
     html! {
         <div class="flex dark:bg-gray-900 min-h-screen">
             <BrowserRouter>
-                <div class="flex-none w-60 bg-gray-900">
+                <div class="flex-none w-60 bg-gray-900 dark:bg-gray-900 border-2 border-gray-900 border-r-gray-800">
                     <Nav/>
                 </div>
                 <div class="flex-auto p-3 justify-center">
@@ -81,6 +84,9 @@ fn switch(routes: Route) -> Html {
         }
         Route::Terms => {
             html! { <Terms /> }
+        }
+        Route::UserDetailsComponent => {
+            html! { <UserDetailsComponent /> }
         }
     }
 }
