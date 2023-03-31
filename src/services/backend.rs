@@ -1,4 +1,4 @@
-use crate::components::login::LoginRequest;
+use crate::pages::login::LoginRequest;
 use crate::pages::register::RegisterRequest;
 use reqwasm::http::Request;
 use serde::{Deserialize, Serialize};

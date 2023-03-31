@@ -1,20 +1,52 @@
+use std::ops::Deref;
 use yew::Callback;
-
+use serde::Serialize;
 use yew::prelude::*;
 
-use crate::components::login::Login;
-use crate::components::login::LoginRequest;
+use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
 use crate::services::backend::authenticate;
+
+#[derive(Serialize, Debug, Default, Clone)]
+pub struct LoginRequest {
+    pub email: String,
+    pub password: String,
+}
 
 #[function_component]
 pub fn LoginPage() -> Html {
-    let on_button_clicked = Callback::from(|login_request: LoginRequest| {
-        authenticate(login_request);
+    let state = use_state(LoginRequest::default);
+
+    let email_on_change = {
+        let state = state.clone();
+        Callback::from(move |value: String| {
+            let mut state_handle = state.deref().clone();
+            state_handle.email = value;
+            state.set(state_handle);
+        })
+    };
+
+    let password_on_change = {
+        let state = state.clone();
+        Callback::from(move |value: String| {
+            let mut state_handle = state.deref().clone();
+            state_handle.password = value;
+            state.set(state_handle);
+        })
+    };
+
+    let submit = Callback::from(move |_| {
+        authenticate(state.deref().clone());
     });
 
     html! {
         <div class="grid place-items-center">
-            <Login on_button_clicked={on_button_clicked}/>
+            <div class="card-base my-10">
+                <div class="my-2">
+                    <TextInput id={"email"} input_type={Some(INPUTTYPE::Email)} on_change={email_on_change}/>
+                    <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
+                </div>
+                <button type="submit" onclick={submit} class="button">{"Login"}</button>
+            </div>
         </div>
     }
 }
