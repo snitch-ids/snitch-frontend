@@ -18,16 +18,16 @@ pub fn Home() -> Html {
                     {"Register"}
                 </a>
             </div>
-            <div class="hidden lg:mt-0 col-span-3 lg:flex">
+            <div class="hidden lg:mt-0 col-span-3 lg:flex dark:drop-shadow-[0_2px_45px_rgba(156,255,138,0.4)]">
                 <img src="img/lock.svg" alt="mockup"/>
             </div>
         </div>
-        <footer class="bg-white dark:bg-gray-900">
+        <footer>
             <div class="mx-auto w-full container p-4 sm:p-6">
                 <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
                 <div class="sm:flex sm:items-center sm:justify-between">
                     <div class="text-gray-500">
-                        {"build: "} <a href="https://github.com/snitch-id/snitch-frontend/commit/"{GIT_HASH}>{GIT_HASH}</a>
+                        {"build: "} <a href="https://github.com/snitch-id/snitch-frontend/commit/"{GIT_HASH}>{&GIT_HASH[0..7]}</a>
                     </div>
                 </div>
             </div>

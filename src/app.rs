@@ -9,8 +9,8 @@ use crate::pages::logout::Logout;
 use crate::pages::messages::Messages;
 use crate::pages::page_not_found::PageNotFound;
 use crate::pages::register::{AfterRegister, Register};
-use crate::pages::token::Token;
 use crate::pages::terms::Terms;
+use crate::pages::token::Token;
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum Route {
@@ -38,17 +38,15 @@ pub enum Route {
 #[function_component]
 pub fn App() -> Html {
     html! {
-        <div class="bg-white dark:bg-gray-900 min-h-screen">
+        <div class="flex dark:bg-gray-900 min-h-screen">
             <BrowserRouter>
-                <div class="flex">
-                    <div class="flex-none w-34">
-                        <Nav/>
-                    </div>
-                    <div class="flex-auto p-3">
-                        <main>
-                            <Switch<Route> render={switch} />
-                        </main>
-                    </div>
+                <div class="flex-none w-60 bg-gray-900">
+                    <Nav/>
+                </div>
+                <div class="flex-auto p-3 justify-center">
+                    <main>
+                        <Switch<Route> render={switch}/>
+                    </main>
                 </div>
             </BrowserRouter>
         </div>

@@ -2,7 +2,6 @@ use yew::prelude::*;
 
 #[function_component]
 pub fn Terms() -> Html {
-
     html! {
         <div class="grid place-items-center text-gray-500 text-base/5 text-sm p-10">
             {"Thank you for considering using Snitch. Please read the following terms and conditions carefully before using the platform. By accessing or using the platform, you agree to be bound by these terms and conditions.\n

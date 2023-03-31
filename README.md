@@ -7,3 +7,9 @@
 ```bash
 SNITCH_BACKEND_URL=http://api.snitch.cool trunk serve
 ```
+
+## Re-compile tailwind.css
+
+```
+./tailwindcss -o ./tailwind.css
+```
