@@ -1,17 +1,25 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
+use yewdux::functional::use_store;
 
 use crate::services::backend::authenticated;
+use crate::stores::user_store::UserStore;
 use crate::Route;
 
 #[function_component]
 pub fn Nav() -> Html {
     let logged_in = authenticated();
 
-    let (authentication_route, authentication_label) = match logged_in {
-        true => (Route::Logout, "Logout"),
-        false => (Route::LoginPage, "Login"),
-    };
+    let (state, dispatch) = use_store::<UserStore>();
+    let mut authentication_route = Route::Logout;
+    let mut authentication_label = "Logout";
+    if state.authenticated {
+        authentication_route = Route::Logout;
+        authentication_label = "Logout";
+    } else {
+        authentication_route = Route::LoginPage;
+        authentication_label = "Login";
+    }
 
     html! {
         <nav class="border-gray-200 px-2 px-4 py-2.5 rounded bg-transparent">

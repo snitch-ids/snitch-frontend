@@ -1,11 +1,13 @@
 use crate::pages::login::LoginRequest;
 use crate::pages::register::RegisterRequest;
+use crate::stores::user_store::UserStore;
 use reqwasm::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
 use wasm_cookies;
 use web_sys::console::log_1;
 use web_sys::RequestCredentials;
+use yewdux::prelude::*;
 
 const BACKEND_URL: &str = env!("SNITCH_BACKEND_URL"); // See Dockerfile
 const USER_COOKIE_NAME: &str = "user_cookie";
@@ -18,6 +20,7 @@ pub struct MessagesRequest<'a> {
 
 pub fn register_user(register_request: &RegisterRequest) {
     let request = register_request.clone();
+
     wasm_bindgen_futures::spawn_local(async move {
         let url = format!("{BACKEND_URL}/register");
 
@@ -38,7 +41,7 @@ pub fn register_user(register_request: &RegisterRequest) {
     });
 }
 
-pub fn authenticate(login_request: LoginRequest) {
+pub fn authenticate(login_request: LoginRequest, dispatch: Dispatch<UserStore>) {
     wasm_bindgen_futures::spawn_local(async move {
         log_1(&"calling url".to_string().into());
         let login_url = format!("{BACKEND_URL}/login");
@@ -52,22 +55,32 @@ pub fn authenticate(login_request: LoginRequest) {
             .await
             .unwrap();
         let msg = format!("auth status: {}", response.status());
+        if response.status() == 200 {
+            dispatch.set(UserStore {
+                authenticated: true,
+            });
+        }
+
         log_1(&msg.into());
     });
 }
 
-pub fn logout() {
+pub fn logout(dispatch: Dispatch<UserStore>) {
     wasm_bindgen_futures::spawn_local(async move {
         log_1(&"calling url".to_string().into());
         let url = format!("{BACKEND_URL}/logout");
         let response = Request::post(&*url)
-            .header("Content-Type", "application/json")
             .header("Accept", "*/*")
             .credentials(RequestCredentials::Include)
             .send()
             .await
             .unwrap();
         let msg = format!("logout status: {}", response.status());
+        if response.status() == 200 {
+            dispatch.set(UserStore {
+                authenticated: false,
+            });
+        }
         log_1(&msg.into());
     });
 }

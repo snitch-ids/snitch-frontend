@@ -1,6 +1,7 @@
+use yew::prelude::*;
 use yewdux::prelude::*;
 
-#[derive(Store, Default, PartialEq)]
+#[derive(Default, Clone, PartialEq, Eq, Store)]
 pub struct UserStore {
-    pub logged_in: bool,
+    pub(crate) authenticated: bool,
 }
