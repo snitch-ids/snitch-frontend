@@ -18,6 +18,11 @@ pub struct MessagesRequest<'a> {
     pub(crate) hostname: &'a str,
 }
 
+#[derive(Serialize, Deserialize, Clone, Debug)]
+struct UserResponse {
+    pub(crate) email: String,
+}
+
 pub fn register_user(register_request: &RegisterRequest) {
     let request = register_request.clone();
 
@@ -41,6 +46,25 @@ pub fn register_user(register_request: &RegisterRequest) {
     });
 }
 
+async fn get_user_info() -> Result<UserResponse, FetchError> {
+    let url = format!("{BACKEND_URL}/user");
+    let msg = format!("calling url {url}");
+    log_1(&msg.to_string().into());
+
+    let response = Request::get(&*url)
+        .credentials(RequestCredentials::Include)
+        .send()
+        .await
+        .unwrap();
+    let msg = format!("auth status: {}", response.status());
+    log_1(&msg.into());
+
+    response
+        .json::<UserResponse>()
+        .await
+        .map_err(|_e| FetchError::NoMessage)
+}
+
 pub fn authenticate(login_request: LoginRequest, dispatch: Dispatch<UserStore>) {
     wasm_bindgen_futures::spawn_local(async move {
         log_1(&"calling url".to_string().into());
@@ -55,10 +79,13 @@ pub fn authenticate(login_request: LoginRequest, dispatch: Dispatch<UserStore>) 
             .await
             .unwrap();
         let msg = format!("auth status: {}", response.status());
+
         if response.status() == 200 {
-            dispatch.set(UserStore {
-                authenticated: true,
-            });
+            if let Ok(user_info) = get_user_info().await {
+                dispatch.set(UserStore {
+                    email: Some(user_info.email),
+                });
+            }
         }
 
         log_1(&msg.into());
@@ -77,9 +104,7 @@ pub fn logout(dispatch: Dispatch<UserStore>) {
             .unwrap();
         let msg = format!("logout status: {}", response.status());
         if response.status() == 200 {
-            dispatch.set(UserStore {
-                authenticated: false,
-            });
+            dispatch.set(UserStore { email: None });
         }
         log_1(&msg.into());
     });
@@ -143,16 +168,6 @@ pub async fn request_messages(hostname: &str) -> Result<Vec<MessageBackend>, Fet
         .map_err(|_e| FetchError::NoMessage)
 }
 
-pub fn test() {
-    wasm_bindgen_futures::spawn_local(async move {
-        let messages_url = format!("{BACKEND_URL}/");
-        let msg = format!("requesting data for hostname {}", messages_url);
-        log_1(&msg.into());
-        let request = Request::get(&*messages_url).credentials(RequestCredentials::Include);
-        request.send().await.unwrap();
-    })
-}
-
 pub async fn create_token() -> MessageToken {
     log_1(&"want token".into());
     let messages_url = format!("{BACKEND_URL}/token/new");
@@ -183,4 +198,14 @@ pub async fn request_tokens() -> Result<Vec<MessageToken>, FetchError> {
         .json::<Vec<MessageToken>>()
         .await
         .map_err(|_e| FetchError::NoMessage)
+}
+
+pub fn test() {
+    wasm_bindgen_futures::spawn_local(async move {
+        let messages_url = format!("{BACKEND_URL}/");
+        let msg = format!("requesting data for hostname {}", messages_url);
+        log_1(&msg.into());
+        let request = Request::get(&*messages_url).credentials(RequestCredentials::Include);
+        request.send().await.unwrap();
+    })
 }

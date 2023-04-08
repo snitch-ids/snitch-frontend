@@ -41,9 +41,9 @@ pub enum Route {
 #[function_component]
 pub fn App() -> Html {
     html! {
-        <div class="flex dark:bg-gray-900 min-h-screen">
+        <div class="flex mb-6 dark:bg-gray-900 min-h-screen">
             <BrowserRouter>
-                <div class="flex-none w-60 bg-gray-900 dark:bg-gray-900 border-2 border-gray-900 border-r-gray-800">
+                <div class="w-60 bg-gray-900 dark:bg-gray-900 border-2 border-gray-900 border-r-gray-800">
                     <Nav/>
                 </div>
                 <div class="flex-auto p-3 justify-center">
