@@ -14,7 +14,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=linux-arm64; eli
   && chmod +x tailwindcss-${ARCHITECTURE} \
   && mv tailwindcss-${ARCHITECTURE} tailwindcss
 
-RUN trunk build
+RUN trunk build --release
 
 FROM nginx:latest AS RUNNER
 
