@@ -3,7 +3,9 @@ run_dev:
 	SNITCH_BACKEND_URL=http://localhost:8081 trunk serve
 
 docker_build:
-	docker build --build-arg TARGETPLATFORM=linux/arm64 -t emrius11/snitch-frontend:main .
+	trunk clean
+	SNITCH_BACKEND_URL=https://api.snitch.cool trunk build --release
+	docker build --build-arg TARGETPLATFORM=linux/arm64 -t emrius11/snitch-frontend:main --no-cache .
 
 docker_push:
 	docker push emrius11/snitch-frontend:main
