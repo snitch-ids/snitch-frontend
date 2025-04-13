@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-use yew::{function_component, html, use_effect_with_deps, use_state, Html};
+use yew::{function_component, html, use_effect_with, use_state, Html};
 
 use crate::services::backend::{request_tokens, MessageToken};
 
@@ -36,17 +36,14 @@ pub fn TokenList(props: &TokenListProps) -> Html {
     let tokens = use_state(|| vec![]);
     {
         let tokens = tokens.clone();
-        use_effect_with_deps(
-            move |_| {
-                let tokens = tokens.clone();
-                wasm_bindgen_futures::spawn_local(async move {
-                    let fetched_tokens = request_tokens().await.unwrap_or_default();
-                    tokens.set(fetched_tokens);
-                });
-                || ()
-            },
-            updated,
-        );
+        use_effect_with(updated, move |_| {
+            let tokens = tokens.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let fetched_tokens = request_tokens().await.unwrap_or_default();
+                tokens.set(fetched_tokens);
+            });
+            || ()
+        });
     }
 
     let token_cards = tokens.iter().map(|token| {

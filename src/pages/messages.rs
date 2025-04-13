@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
 use web_sys::console::log_1;
-use yew::{function_component, html, use_effect_with_deps, use_state, Html};
+use yew::{function_component, html, use_effect_with, use_state, Html};
 
 use crate::components::message_list::MessageList;
 use crate::services::backend::request_hostnames;
@@ -20,20 +20,17 @@ pub fn Messages() -> Html {
         let hostnames = hostnames.clone();
         let hostname_want = hostname_want.clone();
 
-        use_effect_with_deps(
-            move |_| {
-                let hostnames = hostnames.clone();
-                wasm_bindgen_futures::spawn_local(async move {
-                    let fetched_hostnames = request_hostnames().await.unwrap_or_default();
-                    hostname_want.set(fetched_hostnames[0].clone());
-                    hostnames.set(fetched_hostnames);
-                    let msg = format!("found {} hostnames", hostnames.len());
-                    log_1(&msg.into());
-                });
-                || ()
-            },
-            (),
-        );
+        use_effect_with((), move |_| {
+            let hostnames = hostnames.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let fetched_hostnames = request_hostnames().await.unwrap_or_default();
+                hostname_want.set(fetched_hostnames[0].clone());
+                hostnames.set(fetched_hostnames);
+                let msg = format!("found {} hostnames", hostnames.len());
+                log_1(&msg.into());
+            });
+            || ()
+        });
     }
 
     let hostname_want_cb = hostname_want.clone();

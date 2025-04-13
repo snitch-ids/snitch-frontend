@@ -4,7 +4,7 @@ use crate::stores::user_store::UserStore;
 use reqwasm::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
-use wasm_cookies;
+use wasm_cookies::cookies::get;
 use web_sys::console::log_1;
 use web_sys::RequestCredentials;
 use yewdux::prelude::*;
@@ -111,7 +111,7 @@ pub fn logout(dispatch: Dispatch<UserStore>) {
 }
 
 pub fn authenticated() -> bool {
-    wasm_cookies::get(USER_COOKIE_NAME).is_some()
+    get(USER_COOKIE_NAME, USER_COOKIE_NAME).is_some()
 }
 
 #[derive(Debug, Deserialize, Clone, Eq, PartialEq)]

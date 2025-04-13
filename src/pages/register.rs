@@ -52,7 +52,7 @@ pub fn Register() -> Html {
             <div class="card-base">
                 <form>
                     <div>
-                        <TextInput id={"email"} input_type={Some(INPUTTYPE::Email)} on_change={email_on_change}/>
+                        <TextInput id={"email"} placeholder={Some("example@mail.com")} input_type={Some(INPUTTYPE::Email)} on_change={email_on_change}/>
                     </div>
                     <div class="pt-5">
                         <TextInput id={"password"} placeholder={Some("minimum length: 8")} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>

@@ -45,8 +45,8 @@ pub fn LoginPage() -> Html {
         <div class="grid place-items-center">
             <div class="card-base my-10">
                 <div class="my-2">
-                    <TextInput id={"email"} input_type={Some(INPUTTYPE::Email)} on_change={email_on_change}/>
-                    <TextInput id={"password"} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
+                    <TextInput id={"email"} placeholder={Some("email")} input_type={Some(INPUTTYPE::Email)} on_change={email_on_change}/>
+                    <TextInput id={"password"} placeholder={Some("*********")} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
                 </div>
                 <button type="submit" onclick={submit} class="button">{"Login"}</button>
             </div>

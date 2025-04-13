@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-use yew::{function_component, html, use_effect_with_deps, use_state, Html};
+use yew::{function_component, html, use_effect_with, use_state, Html};
 
 use crate::components::message::MessageCard;
 use crate::services::backend::request_messages;
@@ -18,17 +18,14 @@ pub fn MessageList(props: &Props) -> Html {
     let messages = use_state(|| vec![]);
     {
         let messages = messages.clone();
-        use_effect_with_deps(
-            move |_| {
-                let messages = messages.clone();
-                wasm_bindgen_futures::spawn_local(async move {
-                    let fetched_messages = request_messages(&hostname).await.unwrap_or_default();
-                    messages.set(fetched_messages);
-                });
-                || ()
-            },
-            props.hostname.clone(),
-        );
+        use_effect_with(props.hostname.clone(), move |_| {
+            let messages = messages.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let fetched_messages = request_messages(&hostname).await.unwrap_or_default();
+                messages.set(fetched_messages);
+            });
+            || ()
+        });
     }
 
     let message_cards = messages.iter().rev().map(|message| {
