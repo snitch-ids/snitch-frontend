@@ -10,7 +10,7 @@ RUN rustup target add wasm32-unknown-unknown
 COPY . .
 RUN echo "I'm building for $TARGETPLATFORM"
 RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=linux-arm64; elif [ "$TARGETPLATFORM" = "linux/x86_64" ]; then ARCHITECTURE=linux-x64; fi \
-  && curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-${ARCHITECTURE} \
+  && curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.16/tailwindcss-${ARCHITECTURE} \
   && chmod +x tailwindcss-${ARCHITECTURE} \
   && mv tailwindcss-${ARCHITECTURE} tailwindcss
 

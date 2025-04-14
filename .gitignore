@@ -2,3 +2,4 @@ target/
 dist/
 Cargo.lock
 node_modules/
+tailwindcss
