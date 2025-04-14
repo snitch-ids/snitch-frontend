@@ -1,11 +1,13 @@
 use serde::Serialize;
 use std::ops::Deref;
+use wasm_bindgen::JsValue;
+use web_sys::console::log_1;
 use yew::prelude::*;
 use yew::Callback;
 use yewdux::prelude::*;
 
 use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
-use crate::services::backend::authenticate;
+use crate::services::backend::{authenticate, FetchError};
 use crate::stores::user_store::UserStore;
 
 #[derive(Serialize, Debug, Default, Clone)]
@@ -16,7 +18,7 @@ pub struct LoginRequest {
 
 #[function_component]
 pub fn LoginPage() -> Html {
-    let (counter, dispatch) = use_store::<UserStore>();
+    let (user_state, dispatch) = use_store::<UserStore>();
     let state = use_state(LoginRequest::default);
 
     let email_on_change = {

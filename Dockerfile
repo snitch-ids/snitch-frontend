@@ -16,7 +16,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=linux-arm64; eli
 
 RUN trunk build --release
 
-FROM nginx:latest AS RUNNER
+FROM nginx:latest AS runner
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=BUILDER /snitch-frontend/dist/ /usr/share/nginx/html/

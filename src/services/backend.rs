@@ -1,7 +1,7 @@
 use crate::pages::login::LoginRequest;
 use crate::pages::register::RegisterRequest;
-use crate::stores::user_store::UserStore;
-use reqwasm::http::Request;
+use crate::stores::user_store::{AuthenticationError, UserStore};
+use reqwasm::http::{Request, Response};
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
 use wasm_cookies::cookies::get;
@@ -80,13 +80,18 @@ pub fn authenticate(login_request: LoginRequest, dispatch: Dispatch<UserStore>) 
             .unwrap();
         let msg = format!("auth status: {}", response.status());
 
-        if response.status() == 200 {
-            if let Ok(user_info) = get_user_info().await {
-                dispatch.set(UserStore {
-                    email: Some(user_info.email),
-                });
+        let (email, authentication_error) = match response.status() {
+            200 => {
+                let user_info = get_user_info().await.unwrap();
+                (Some(user_info.email), None)
             }
-        }
+            _ => (None, Some(AuthenticationError::LoginFailed)),
+        };
+
+        dispatch.set(UserStore {
+            email,
+            authentication_error,
+        });
 
         log_1(&msg.into());
     });
@@ -103,9 +108,10 @@ pub fn logout(dispatch: Dispatch<UserStore>) {
             .await
             .unwrap();
         let msg = format!("logout status: {}", response.status());
-        if response.status() == 200 {
-            dispatch.set(UserStore { email: None });
-        }
+        dispatch.set(UserStore {
+            email: None,
+            ..Default::default()
+        });
         log_1(&msg.into());
     });
 }
