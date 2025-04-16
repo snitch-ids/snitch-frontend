@@ -8,7 +8,7 @@ use yewdux::prelude::*;
 
 use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
 use crate::services::backend::{authenticate, FetchError};
-use crate::stores::user_store::UserStore;
+use crate::stores::user_store::{AuthenticationError, UserStore};
 
 #[derive(Serialize, Debug, Default, Clone)]
 pub struct LoginRequest {
@@ -42,7 +42,11 @@ pub fn LoginPage() -> Html {
     let submit = Callback::from(move |_| {
         authenticate(state.deref().clone(), dispatch.clone());
     });
-
+    let user_state_handle = user_state.clone();
+    let auth_error_message = match &user_state_handle.authentication_error {
+        None => "".to_string(),
+        Some(e) => e.to_string(),
+    };
     html! {
         <div class="grid place-items-center">
             <div class="card-base my-10">
@@ -51,6 +55,11 @@ pub fn LoginPage() -> Html {
                     <TextInput id={"password"} placeholder={Some("*********")} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
                 </div>
                 <button type="submit" onclick={submit} class="button">{"Login"}</button>
+                if user_state_handle.authentication_error.is_some() {
+                    <div>
+                        {auth_error_message}
+                    </div>
+                }
             </div>
         </div>
     }

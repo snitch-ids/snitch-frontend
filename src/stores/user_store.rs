@@ -1,9 +1,18 @@
-use yew::prelude::*;
+use std::fmt::{Display, Formatter};
 use yewdux::prelude::*;
 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) enum AuthenticationError {
     LoginFailed,
+}
+
+impl Display for AuthenticationError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let message = match self {
+            AuthenticationError::LoginFailed => "login failed",
+        };
+        f.write_str(message)
+    }
 }
 
 #[derive(Default, Clone, PartialEq, Eq, Store)]
