@@ -4,8 +4,8 @@ ENV SNITCH_BACKEND_URL="https://api.snitch.cool"
 
 WORKDIR snitch-frontend
 
-RUN cargo install --locked wasm-bindgen-cli
-RUN cargo install --locked trunk
+RUN cargo install wasm-bindgen-cli
+RUN cargo install trunk
 RUN rustup target add wasm32-unknown-unknown
 COPY . .
 RUN echo "building for $TARGETPLATFORM"
