@@ -1,11 +1,11 @@
 FROM rust:latest AS builder
-ARG TARGETPLATFORM="linux-x64"
+ARG TARGETPLATFORM="linux/x86_64"
 ENV SNITCH_BACKEND_URL="https://api.snitch.cool"
 
 WORKDIR snitch-frontend
 
-RUN cargo install --locked wasm-bindgen-cli
-RUN cargo install --locked trunk
+RUN cargo install wasm-bindgen-cli
+RUN cargo install trunk
 RUN rustup target add wasm32-unknown-unknown
 COPY . .
 RUN echo "building for $TARGETPLATFORM"
@@ -16,7 +16,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=linux-arm64; eli
 
 RUN trunk build --release
 
-FROM nginx:latest AS RUNNER
+FROM nginx:latest AS runner
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=BUILDER /snitch-frontend/dist/ /usr/share/nginx/html/
