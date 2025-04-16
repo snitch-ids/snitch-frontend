@@ -1,5 +1,5 @@
 FROM rust:latest AS builder
-ARG TARGETPLATFORM="linux-x64"
+ARG TARGETPLATFORM="linux/x86_64"
 ENV SNITCH_BACKEND_URL="https://api.snitch.cool"
 
 WORKDIR snitch-frontend
