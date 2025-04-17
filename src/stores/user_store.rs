@@ -20,3 +20,9 @@ pub struct UserStore {
     pub(crate) email: Option<String>,
     pub(crate) authentication_error: Option<AuthenticationError>,
 }
+
+impl UserStore {
+    pub(crate) fn is_authenticated(&self) -> bool {
+        self.email.is_some() && self.authentication_error.is_none()
+    }
+}

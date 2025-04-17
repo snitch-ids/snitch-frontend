@@ -1,12 +1,17 @@
 use crate::pages::login::LoginRequest;
 use crate::pages::register::RegisterRequest;
 use crate::stores::user_store::{AuthenticationError, UserStore};
+use crate::Route;
+
 use reqwasm::http::{Request, Response};
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
 use wasm_cookies::cookies::get;
 use web_sys::console::log_1;
 use web_sys::RequestCredentials;
+
+use yew::prelude::*;
+use yew_router::prelude::*;
 use yewdux::prelude::*;
 
 const BACKEND_URL: &str = env!("SNITCH_BACKEND_URL"); // See Dockerfile
@@ -33,11 +38,10 @@ pub fn register_user(register_request: &RegisterRequest) {
         log_1(&msg.to_string().into());
 
         let payload = to_string(&request).unwrap();
-        let response = Request::post(&*url)
+        let response = Request::post(&url)
             .header("Content-Type", "application/json")
             .header("Accept", "*/*")
             .credentials(RequestCredentials::Include)
-            .body(&payload)
             .send()
             .await
             .unwrap();
@@ -51,11 +55,12 @@ async fn get_user_info() -> Result<UserResponse, FetchError> {
     let msg = format!("calling url {url}");
     log_1(&msg.to_string().into());
 
-    let response = Request::get(&*url)
+    let response = Request::get(&url)
         .credentials(RequestCredentials::Include)
         .send()
         .await
-        .unwrap();
+        .map_err(|_e| FetchError::UserInfo)?;
+
     let msg = format!("auth status: {}", response.status());
     log_1(&msg.into());
 
@@ -70,7 +75,7 @@ pub fn authenticate(login_request: LoginRequest, dispatch: Dispatch<UserStore>) 
         log_1(&"calling url".to_string().into());
         let login_url = format!("{BACKEND_URL}/login");
         let payload = to_string(&login_request).unwrap();
-        let response = Request::post(&*login_url)
+        let response = Request::post(&login_url)
             .header("Content-Type", "application/json")
             .header("Accept", "*/*")
             .credentials(RequestCredentials::Include)
@@ -131,6 +136,7 @@ pub struct MessageBackend {
 #[derive(Clone, Debug)]
 pub enum FetchError {
     NoMessage,
+    UserInfo,
 }
 
 pub async fn request_hostnames() -> Result<Vec<String>, FetchError> {

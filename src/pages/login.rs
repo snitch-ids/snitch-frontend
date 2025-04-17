@@ -9,6 +9,8 @@ use yewdux::prelude::*;
 use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
 use crate::services::backend::{authenticate, FetchError};
 use crate::stores::user_store::{AuthenticationError, UserStore};
+use crate::Route;
+use yew_router::prelude::use_navigator;
 
 #[derive(Serialize, Debug, Default, Clone)]
 pub struct LoginRequest {
@@ -18,6 +20,8 @@ pub struct LoginRequest {
 
 #[function_component]
 pub fn LoginPage() -> Html {
+    let navigator = use_navigator().unwrap();
+
     let (user_state, dispatch) = use_store::<UserStore>();
     let state = use_state(LoginRequest::default);
 
@@ -38,15 +42,20 @@ pub fn LoginPage() -> Html {
             state.set(state_handle);
         })
     };
-
-    let submit = Callback::from(move |_| {
-        authenticate(state.deref().clone(), dispatch.clone());
-    });
     let user_state_handle = user_state.clone();
+
+    if user_state_handle.is_authenticated() {
+        navigator.push(&Route::Messages);
+    };
+
     let auth_error_message = match &user_state_handle.authentication_error {
         None => "".to_string(),
         Some(e) => e.to_string(),
     };
+
+    let submit = Callback::from(move |_| {
+        authenticate(state.deref().clone(), dispatch.clone());
+    });
     html! {
         <div class="grid place-items-center">
             <div class="card-base my-10">
