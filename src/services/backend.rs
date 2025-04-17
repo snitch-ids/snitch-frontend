@@ -143,7 +143,7 @@ pub async fn request_hostnames() -> Result<Vec<String>, FetchError> {
     let msg = format!("requesting hostnames");
     log_1(&msg.into());
 
-    let messages_url = format!("{BACKEND_URL}/messages/hostnames");
+    let messages_url = format!("{BACKEND_URL}/hostnames");
     let response = Request::get(&*messages_url)
         .header("Content-Type", "application/json")
         .credentials(RequestCredentials::Include)
@@ -163,13 +163,9 @@ pub async fn request_hostnames() -> Result<Vec<String>, FetchError> {
 pub async fn request_messages(hostname: &str) -> Result<Vec<MessageBackend>, FetchError> {
     let msg = format!("requesting data for hostname {}", hostname);
     log_1(&msg.into());
-    let messages_request = MessagesRequest { hostname };
-    let payload = to_string(&messages_request).unwrap();
-    let messages_url = format!("{BACKEND_URL}/messages/all/");
-    let response = Request::post(&*messages_url)
+    let messages_url = format!("{BACKEND_URL}/messages/{hostname}");
+    let response = Request::get(&messages_url)
         .credentials(RequestCredentials::Include)
-        .header("Content-Type", "application/json")
-        .body(&payload)
         .send()
         .await
         .unwrap();

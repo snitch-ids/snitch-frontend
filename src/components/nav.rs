@@ -8,18 +8,12 @@ use crate::Route;
 
 #[function_component]
 pub fn Nav() -> Html {
-    let logged_in = authenticated();
-
-    let (state, dispatch) = use_store::<UserStore>();
-    let mut authentication_route = Route::Logout;
-    let mut authentication_label = "Logout";
-    if state.email.is_some() {
-        authentication_route = Route::Logout;
-        authentication_label = "Logout";
+    let (state, _) = use_store::<UserStore>();
+    let (authentication_route, authentication_label) = if state.email.is_some() {
+        (Route::Logout, "Logout")
     } else {
-        authentication_route = Route::LoginPage;
-        authentication_label = "Login";
-    }
+        (Route::LoginPage, "Login")
+    };
 
     html! {
         <nav class="border-gray-200 px-2 px-4 py-2.5 rounded bg-transparent">
