@@ -2,12 +2,13 @@ use crate::pages::login::LoginRequest;
 use crate::pages::register::RegisterRequest;
 use crate::stores::user_store::{AuthenticationError, UserStore};
 use crate::Route;
+use reqwasm::Error;
 
 use reqwasm::http::{Request, Response};
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
 use wasm_cookies::cookies::get;
-use web_sys::console::log_1;
+use web_sys::console::{log_1, warn_1};
 use web_sys::RequestCredentials;
 
 use yew::prelude::*;
@@ -75,30 +76,28 @@ pub fn authenticate(login_request: LoginRequest, dispatch: Dispatch<UserStore>) 
         log_1(&"calling url".to_string().into());
         let login_url = format!("{BACKEND_URL}/login");
         let payload = to_string(&login_request).unwrap();
-        let response = Request::post(&login_url)
+        let (email, authentication_error) = Request::post(&login_url)
             .header("Content-Type", "application/json")
             .header("Accept", "*/*")
             .credentials(RequestCredentials::Include)
             .body(&payload)
             .send()
             .await
-            .unwrap();
-        let msg = format!("auth status: {}", response.status());
-
-        let (email, authentication_error) = match response.status() {
-            200 => {
-                let user_info = get_user_info().await.unwrap();
-                (Some(user_info.email), None)
-            }
-            _ => (None, Some(AuthenticationError::LoginFailed)),
-        };
+            .map_or_else(
+                |e| {
+                    warn_1(&e.to_string().into());
+                    (None, Some(AuthenticationError::LoginFailed))
+                },
+                |response| match response.status() {
+                    200 => (Some(login_request.email), None),
+                    _ => (None, Some(AuthenticationError::LoginFailed)),
+                },
+            );
 
         dispatch.set(UserStore {
             email,
             authentication_error,
         });
-
-        log_1(&msg.into());
     });
 }
 
