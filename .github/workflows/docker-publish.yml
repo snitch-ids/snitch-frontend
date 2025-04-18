@@ -32,15 +32,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: install binaryen
-        run: |
-          wget -O /tmp/binaryen.tar.gz https://github.com/WebAssembly/binaryen/releases/download/version_111/binaryen-version_111-x86_64-linux.tar.gz
-          tar -xvf /tmp/binaryen.tar.gz -C /tmp
-          mkdir -p ~/.cargo/bin/
-          cp /tmp/binaryen-version_111/bin/wasm-opt ~/.cargo/bin/
-          cp -r /tmp/binaryen-version_111/lib ~/.cargo/
-          rm -rf /tmp/binaryen.tar.gz /tmp/binaryen-version_111/
-
       - name: install tailwind
         env:
           ARCHITECTURE: linux-x64
