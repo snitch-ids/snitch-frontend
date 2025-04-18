@@ -20,8 +20,56 @@ env:
   IMAGE_NAME: emrius11/snitch-frontend
 
 jobs:
-  build:
 
+  build:
+    runs-on: ubuntu-22.04
+    container:
+      image: rust:latest
+    env:
+      SNITCH_BACKEND_URL: "https://api.snitch.cool"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: install binaryen
+        run: |
+          wget -O /tmp/binaryen.tar.gz https://github.com/WebAssembly/binaryen/releases/download/version_111/binaryen-version_111-x86_64-linux.tar.gz
+          tar -xvf /tmp/binaryen.tar.gz -C /tmp
+          mkdir -p ~/.cargo/bin/
+          cp /tmp/binaryen-version_111/bin/wasm-opt ~/.cargo/bin/
+          cp -r /tmp/binaryen-version_111/lib ~/.cargo/
+          rm -rf /tmp/binaryen.tar.gz /tmp/binaryen-version_111/
+
+      - name: install tailwind
+        env:
+          ARCHITECTURE: linux-x64
+        run: |
+          curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.16/tailwindcss-${ARCHITECTURE}
+          chmod +x tailwindcss-${ARCHITECTURE}
+          mv tailwindcss-${ARCHITECTURE} /usr/bin/tailwindcss
+
+      - name: install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli
+
+      - name: install trunk
+        run: cargo install trunk
+
+      - name: add wasm target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: build frontend
+        run: trunk build --release --verbose
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: front-end
+          path: |
+            dist
+
+  build-docker:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,13 +82,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-#       Install the cosign tool except on PR
-#      # https://github.com/sigstore/cosign-installer
-#      - name: Install cosign
-#        if: github.event_name != 'pull_request'
-#        uses: sigstore/cosign-installer@f3c664df7af409cb4873aa5068053ba9d61a57b6 #v2.6.0
-#        with:
-#          cosign-release: 'v1.13.1'
+      - name: Download front-end
+        uses: actions/download-artifact@v4
+        with:
+          name: front-end
+          path: dist
+
+      #       Install the cosign tool except on PR
+      #      # https://github.com/sigstore/cosign-installer
+      #      - name: Install cosign
+      #        if: github.event_name != 'pull_request'
+      #        uses: sigstore/cosign-installer@f3c664df7af409cb4873aa5068053ba9d61a57b6 #v2.6.0
+      #        with:
+      #          cosign-release: 'v1.13.1'
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
       - name: Setup Docker buildx
@@ -68,9 +122,10 @@ jobs:
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
+        uses: docker/build-push-action@v4
         with:
           context: .
+          platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
