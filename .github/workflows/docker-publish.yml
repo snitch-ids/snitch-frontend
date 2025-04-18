@@ -22,7 +22,7 @@ env:
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     container:
       image: rust:latest
     env:
@@ -34,7 +34,7 @@ jobs:
 
       - name: install tailwind
         env:
-          ARCHITECTURE: linux-x64
+          ARCHITECTURE: linux-arm64
         run: |
           curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.16/tailwindcss-${ARCHITECTURE}
           chmod +x tailwindcss-${ARCHITECTURE}
