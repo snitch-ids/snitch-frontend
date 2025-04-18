@@ -32,10 +32,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: debug
-        run: uname -m
-
-      - name: fixthis
+      - name: install binaryen
         run: |
           wget -O /tmp/binaryen.tar.gz https://github.com/WebAssembly/binaryen/releases/download/version_111/binaryen-version_111-x86_64-linux.tar.gz
           tar -xvf /tmp/binaryen.tar.gz -C /tmp
@@ -51,9 +48,6 @@ jobs:
           curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.16/tailwindcss-${ARCHITECTURE}
           chmod +x tailwindcss-${ARCHITECTURE}
           mv tailwindcss-${ARCHITECTURE} /usr/bin/tailwindcss
-    
-      - name: install wasm-opt
-        run: cargo install wasm-opt
 
       - name: install wasm-bindgen-cli
         run: cargo install wasm-bindgen-cli
@@ -93,12 +87,6 @@ jobs:
         with:
           name: front-end
           path: dist
-
-      - name: List contents of dist directory
-        run: ls -la dist
-
-      - name: debug
-        run: ls -l
 
       #       Install the cosign tool except on PR
       #      # https://github.com/sigstore/cosign-installer
