@@ -8,10 +8,11 @@ pub fn Token() -> Html {
     let updated_handle = updated.clone();
 
     let create_token_callback = Callback::from(move |_| {
+        let updated_handle = updated_handle.clone();
         wasm_bindgen_futures::spawn_local(async move {
             create_token().await;
+            updated_handle.set(!*updated_handle);
         });
-        updated_handle.set(!*updated_handle);
     });
     html!(
         <div class="card">
