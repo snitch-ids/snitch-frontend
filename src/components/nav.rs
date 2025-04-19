@@ -2,7 +2,6 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 use yewdux::functional::use_store;
 
-use crate::services::backend::authenticated;
 use crate::stores::user_store::UserStore;
 use crate::Route;
 

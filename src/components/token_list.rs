@@ -32,8 +32,8 @@ pub struct TokenListProps {
 #[function_component]
 pub fn TokenList(props: &TokenListProps) -> Html {
     log::info!("Fetching token");
-    let updated = props.updated.clone();
-    let tokens = use_state(|| vec![]);
+    let updated = props.updated;
+    let tokens = use_state(std::vec::Vec::new);
     {
         let tokens = tokens.clone();
         use_effect_with(updated, move |_| {

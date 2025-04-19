@@ -15,7 +15,7 @@ pub fn MessageList(props: &Props) -> Html {
     log::info!("Fetching data for {}", &props.hostname);
     let hostname = props.hostname.clone();
 
-    let messages = use_state(|| vec![]);
+    let messages = use_state(std::vec::Vec::new);
     {
         let messages = messages.clone();
         use_effect_with(props.hostname.clone(), move |_| {

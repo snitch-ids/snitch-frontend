@@ -1,14 +1,12 @@
 use serde::Serialize;
 use std::ops::Deref;
-use wasm_bindgen::JsValue;
-use web_sys::console::log_1;
 use yew::prelude::*;
 use yew::Callback;
 use yewdux::prelude::*;
 
 use crate::components::atomics::text_input::{TextInput, INPUTTYPE};
-use crate::services::backend::{authenticate, FetchError};
-use crate::stores::user_store::{AuthenticationError, UserStore};
+use crate::services::backend::authenticate;
+use crate::stores::user_store::UserStore;
 use crate::Route;
 use yew_router::prelude::use_navigator;
 

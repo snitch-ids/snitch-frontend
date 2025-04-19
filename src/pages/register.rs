@@ -1,6 +1,5 @@
 use gloo::timers::callback::Timeout;
 use std::ops::Deref;
-use web_sys::console::log_1;
 use yew::Callback;
 
 use yew::prelude::*;
@@ -28,7 +27,7 @@ pub fn Register() -> Html {
         Callback::from(move |value: String| {
             let mut state_handle = state.deref().clone();
             state_handle.email = value;
-            state.set(state_handle.into());
+            state.set(state_handle);
         })
     };
 

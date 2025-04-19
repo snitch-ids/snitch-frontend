@@ -13,7 +13,7 @@ pub struct Props<'a> {
 
 #[function_component]
 pub fn Messages() -> Html {
-    let hostnames = use_state(|| vec![]);
+    let hostnames = use_state(std::vec::Vec::new);
     let hostname_want = use_state(|| "".to_string());
 
     {

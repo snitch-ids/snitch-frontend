@@ -1,18 +1,14 @@
 use crate::pages::login::LoginRequest;
 use crate::pages::register::RegisterRequest;
 use crate::stores::user_store::{AuthenticationError, UserStore};
-use crate::Route;
-use reqwasm::Error;
 
-use reqwasm::http::{Request, Response};
+use reqwasm::http::Request;
 use serde::{Deserialize, Serialize};
 use serde_json::to_string;
 use wasm_cookies::cookies::get;
 use web_sys::console::{log_1, warn_1};
 use web_sys::RequestCredentials;
 
-use yew::prelude::*;
-use yew_router::prelude::*;
 use yewdux::prelude::*;
 
 const BACKEND_URL: &str = env!("SNITCH_BACKEND_URL"); // See Dockerfile
@@ -105,7 +101,7 @@ pub fn logout(dispatch: Dispatch<UserStore>) {
     wasm_bindgen_futures::spawn_local(async move {
         log_1(&"calling url".to_string().into());
         let url = format!("{BACKEND_URL}/logout");
-        let response = Request::post(&*url)
+        let response = Request::post(&url)
             .header("Accept", "*/*")
             .credentials(RequestCredentials::Include)
             .send()
@@ -139,11 +135,11 @@ pub enum FetchError {
 }
 
 pub async fn request_hostnames() -> Result<Vec<String>, FetchError> {
-    let msg = format!("requesting hostnames");
+    let msg = "requesting hostnames".to_string();
     log_1(&msg.into());
 
     let messages_url = format!("{BACKEND_URL}/hostnames");
-    let response = Request::get(&*messages_url)
+    let response = Request::get(&messages_url)
         .header("Content-Type", "application/json")
         .credentials(RequestCredentials::Include)
         .send()
@@ -178,24 +174,24 @@ pub async fn request_messages(hostname: &str) -> Result<Vec<MessageBackend>, Fet
 pub async fn create_token() -> MessageToken {
     log_1(&"want token".into());
     let messages_url = format!("{BACKEND_URL}/token/new");
-    let response = Request::get(&*messages_url)
+    let response = Request::get(&messages_url)
         .credentials(RequestCredentials::Include)
         .header("Content-Type", "application/json")
         .send()
         .await
         .unwrap();
-    let token = response
+
+    response
         .json::<MessageToken>()
         .await
         .map_err(|_e| FetchError::NoMessage)
-        .expect("TODO: panic token");
-    token
+        .expect("TODO: panic token")
 }
 
 pub async fn request_tokens() -> Result<Vec<MessageToken>, FetchError> {
     log_1(&"want token".into());
     let messages_url = format!("{BACKEND_URL}/token");
-    let response = Request::get(&*messages_url)
+    let response = Request::get(&messages_url)
         .credentials(RequestCredentials::Include)
         .header("Content-Type", "application/json")
         .send()
@@ -212,7 +208,7 @@ pub fn test() {
         let messages_url = format!("{BACKEND_URL}/");
         let msg = format!("requesting data for hostname {}", messages_url);
         log_1(&msg.into());
-        let request = Request::get(&*messages_url).credentials(RequestCredentials::Include);
+        let request = Request::get(&messages_url).credentials(RequestCredentials::Include);
         request.send().await.unwrap();
     })
 }

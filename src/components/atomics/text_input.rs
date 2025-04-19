@@ -45,8 +45,8 @@ pub fn TextInput(props: &Props) -> Html {
         })
     };
 
-    let input_type = get_input_type(&props);
-    let placeholder = get_placeholder(&props);
+    let input_type = get_input_type(props);
+    let placeholder = get_placeholder(props);
     html! {
         <div>
             <label for={props.id.clone()} class="block mt-2 mb-1 text-sm font-medium text-gray-900 dark:text-white">{props.id.clone()}</label>
