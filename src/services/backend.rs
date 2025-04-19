@@ -53,7 +53,7 @@ async fn get_user_info() -> Result<UserResponse, FetchError> {
     log_1(&msg.to_string().into());
 
     let response = Request::get(&url)
-        .credentials(RequestCredentials::Include)
+        .credentials(RequestCredentials::SameOrigin)
         .send()
         .await
         .map_err(|_e| FetchError::UserInfo)?;
@@ -75,7 +75,7 @@ pub fn authenticate(login_request: LoginRequest, dispatch: Dispatch<UserStore>) 
         let (email, authentication_error) = Request::post(&login_url)
             .header("Content-Type", "application/json")
             .header("Accept", "*/*")
-            .credentials(RequestCredentials::Include)
+            .credentials(RequestCredentials::SameOrigin)
             .body(&payload)
             .send()
             .await
@@ -103,7 +103,7 @@ pub fn logout(dispatch: Dispatch<UserStore>) {
         let url = format!("{BACKEND_URL}/logout");
         let response = Request::post(&url)
             .header("Accept", "*/*")
-            .credentials(RequestCredentials::Include)
+            .credentials(RequestCredentials::SameOrigin)
             .send()
             .await
             .unwrap();
@@ -141,7 +141,7 @@ pub async fn request_hostnames() -> Result<Vec<String>, FetchError> {
     let messages_url = format!("{BACKEND_URL}/hostnames");
     let response = Request::get(&messages_url)
         .header("Content-Type", "application/json")
-        .credentials(RequestCredentials::Include)
+        .credentials(RequestCredentials::SameOrigin)
         .send()
         .await
         .unwrap();
@@ -160,7 +160,7 @@ pub async fn request_messages(hostname: &str) -> Result<Vec<MessageBackend>, Fet
     log_1(&msg.into());
     let messages_url = format!("{BACKEND_URL}/messages/{hostname}");
     let response = Request::get(&messages_url)
-        .credentials(RequestCredentials::Include)
+        .credentials(RequestCredentials::SameOrigin)
         .send()
         .await
         .unwrap();
@@ -175,7 +175,7 @@ pub async fn create_token() -> MessageToken {
     log_1(&"want token".into());
     let messages_url = format!("{BACKEND_URL}/token/new");
     let response = Request::get(&messages_url)
-        .credentials(RequestCredentials::Include)
+        .credentials(RequestCredentials::SameOrigin)
         .header("Content-Type", "application/json")
         .send()
         .await
@@ -192,7 +192,7 @@ pub async fn request_tokens() -> Result<Vec<MessageToken>, FetchError> {
     log_1(&"want token".into());
     let messages_url = format!("{BACKEND_URL}/token");
     let response = Request::get(&messages_url)
-        .credentials(RequestCredentials::Include)
+        .credentials(RequestCredentials::SameOrigin)
         .header("Content-Type", "application/json")
         .send()
         .await
@@ -208,7 +208,7 @@ pub fn test() {
         let messages_url = format!("{BACKEND_URL}/");
         let msg = format!("requesting data for hostname {}", messages_url);
         log_1(&msg.into());
-        let request = Request::get(&messages_url).credentials(RequestCredentials::Include);
+        let request = Request::get(&messages_url).credentials(RequestCredentials::SameOrigin);
         request.send().await.unwrap();
     })
 }
