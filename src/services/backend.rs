@@ -42,7 +42,7 @@ pub fn register_user(register_request: &RegisterRequest) {
         let response = Request::post(&url)
             .header("Content-Type", "application/json")
             .header("Accept", "*/*")
-            .credentials(RequestCredentials::Include)
+            .body(payload)
             .send()
             .await
             .unwrap();
