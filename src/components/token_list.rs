@@ -2,7 +2,7 @@ use yew::prelude::*;
 
 use yew::{function_component, html, use_effect_with, use_state, Html};
 
-use crate::services::backend::{request_tokens, MessageToken};
+use crate::services::backend::{create_token, request_tokens, revoke_token, MessageToken};
 
 #[derive(Clone, Debug, Eq, PartialEq, Properties)]
 pub struct Props {
@@ -11,14 +11,22 @@ pub struct Props {
 
 #[function_component(TokenCard)]
 pub fn token_card(props: &Props) -> Html {
-    let token = &props.token;
+    let token = props.token.clone();
+    let token_clone = token.clone();
+    let cb_revoke_token = Callback::from(move |_| {
+        let token_clone = token_clone.clone();
+        wasm_bindgen_futures::spawn_local(async move {
+            revoke_token(&token_clone).await;
+        });
+    });
+
     html!(
         <>
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 { token }
             </th>
             <td class="px-6 py-4">
-                <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">{"Revoke"}</a>
+                <button type="submit" onclick={cb_revoke_token} class="button bg-transparent">{"Revoke"}</button>
             </td>
         </>
     )
@@ -33,7 +41,7 @@ pub struct TokenListProps {
 pub fn TokenList(props: &TokenListProps) -> Html {
     log::info!("Fetching token");
     let updated = props.updated;
-    let tokens = use_state(std::vec::Vec::new);
+    let tokens = use_state(Vec::new);
     {
         let tokens = tokens.clone();
         use_effect_with(updated, move |_| {
