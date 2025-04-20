@@ -12,13 +12,13 @@ use web_sys::RequestCredentials;
 use yewdux::prelude::*;
 
 const BACKEND_URL: &str = env!("SNITCH_BACKEND_URL"); // See Dockerfile
-const USER_COOKIE_NAME: &str = "user_cookie";
+const USER_COOKIE_NAME: &str = "snitch_user";
 pub type MessageToken = String;
 
 #[cfg(debug_assertions)]
 const INCLUDE_CREDENTIALS: RequestCredentials = RequestCredentials::Include;
 #[cfg(not(debug_assertions))]
-const INCLUDE_CREDENTIALS: RequestCredentials = RequestCredentials::Include;
+const INCLUDE_CREDENTIALS: RequestCredentials = RequestCredentials::SameOrigin;
 
 #[derive(Serialize)]
 pub struct MessagesRequest<'a> {

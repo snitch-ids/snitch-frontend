@@ -12,7 +12,9 @@ pub fn Logout() -> Html {
 
     html! {
         <div class="card">
-            {"You are logged out now."}
+            <div class="info-message">
+                {"You are logged out now."}
+            </div>
         </div>
     }
 }

@@ -28,6 +28,10 @@
     }
 
     .warning-message {
-        @apply border-orange-400 text-orange-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:placeholder-gray-400
+        @apply border-orange-400 text-orange-400 text-sm rounded-lg block w-full p-2.5 dark:placeholder-gray-400
+    }
+
+    .info-message {
+        @apply border-orange-400 text-gray-200 text-sm rounded-lg block w-full p-2.5 dark:placeholder-gray-400
     }
 }
