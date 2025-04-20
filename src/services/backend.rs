@@ -18,7 +18,7 @@ pub type MessageToken = String;
 #[cfg(debug_assertions)]
 const INCLUDE_CREDENTIALS: RequestCredentials = RequestCredentials::Include;
 #[cfg(not(debug_assertions))]
-const INCLUDE_CREDENTIALS: RequestCredentials = RequestCredentials::SameOrigin;
+const INCLUDE_CREDENTIALS: RequestCredentials = RequestCredentials::Include;
 
 #[derive(Serialize)]
 pub struct MessagesRequest<'a> {
