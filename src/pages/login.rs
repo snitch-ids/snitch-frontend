@@ -63,7 +63,7 @@ pub fn LoginPage() -> Html {
                 </div>
                 <button type="submit" onclick={submit} class="button">{"Login"}</button>
                 if user_state_handle.authentication_error.is_some() {
-                    <div>
+                    <div class="warning-message">
                         {auth_error_message}
                     </div>
                 }

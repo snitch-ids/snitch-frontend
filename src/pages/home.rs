@@ -27,7 +27,7 @@ pub fn Home() -> Html {
                 <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
                 <div class="sm:flex sm:items-center sm:justify-between">
                     <div class="text-gray-500">
-                        {"build: "} <a href="https://github.com/snitch-id/snitch-frontend/commit/"{GIT_HASH}>{&GIT_HASH[0..7]}</a>
+                        {"build: "} <a href="https://github.com/snitch-ids/snitch-frontend/commit/"{GIT_HASH}>{&GIT_HASH[0..8]}</a>
                     </div>
                 </div>
             </div>

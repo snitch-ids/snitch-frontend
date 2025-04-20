@@ -1,6 +1,6 @@
 # Snitch Front End
 
-[![Based on this Demo](https://snitch.cool/)](https://snitch.cool/)
+[![Based on this Demo](https://snitch.cool/)]](https://snitch.cool/)
 
 ## Installation
 
