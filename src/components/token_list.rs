@@ -2,7 +2,7 @@ use yew::prelude::*;
 
 use yew::{function_component, html, use_effect_with, use_state, Html};
 
-use crate::services::backend::{create_token, request_tokens, revoke_token, MessageToken};
+use crate::services::backend::{request_tokens, revoke_token, MessageToken};
 
 #[derive(Clone, Debug, Eq, PartialEq, Properties)]
 pub struct Props {
