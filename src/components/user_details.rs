@@ -9,5 +9,19 @@ pub struct UserDetails {
 
 #[function_component]
 pub fn UserDetailsComponent() -> Html {
-    html!({ "bla" })
+    let (user_state, _) = use_store::<UserStore>();
+    let username = &user_state.email;
+    html!(
+    <div class="card">
+        <div class="card-content">
+            <div class="card-base">
+                <div class="card-title">{"User Details"}</div>
+                <div class="text-gray-100">{username}</div>
+            </div>
+        </div>
+        <div class="card-action">
+            <button class="button-danger my-10">{"Delete Account"}</button>
+        </div>
+    </div>
+    )
 }

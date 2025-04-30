@@ -57,11 +57,9 @@ pub fn LoginPage() -> Html {
     html! {
         <div class="grid place-items-center">
             <div class="card-base my-10">
-                <div class="my-2">
-                    <TextInput id={"email"} placeholder={Some("email")} input_type={Some(INPUTTYPE::Email)} on_change={email_on_change}/>
-                    <TextInput id={"password"} placeholder={Some("*********")} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
-                </div>
-                <button type="submit" onclick={submit} class="button">{"Login"}</button>
+                <TextInput id={"email"} placeholder={Some("email")} input_type={Some(INPUTTYPE::Email)} on_change={email_on_change}/>
+                <TextInput id={"password"} placeholder={Some("*********")} input_type={Some(INPUTTYPE::Password)} on_change={password_on_change}/>
+                <button type="submit" onclick={submit} class="button my-3 px-10">{"Login"}</button>
                 if user_state_handle.authentication_error.is_some() {
                     <div class="warning-message">
                         {auth_error_message}
