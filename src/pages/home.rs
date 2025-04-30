@@ -2,6 +2,12 @@ use yew::prelude::*;
 
 const GIT_HASH: &str = env!("GIT_HASH");
 
+const ASSETS_BASE_PATH: &str = if cfg!(debug_assertions) {
+    "img/" // Development path
+} else {
+    "" // Production path (root)
+};
+
 #[function_component]
 pub fn Home() -> Html {
     html! {
@@ -19,7 +25,7 @@ pub fn Home() -> Html {
                 </a>
             </div>
             <div class="hidden lg:mt-0 col-span-3 lg:flex dark:drop-shadow-[0_2px_45px_rgba(156,255,138,0.4)]">
-                <img src="img/lock.svg" alt="mockup"/>
+                <img src={format!("{}lock.svg", ASSETS_BASE_PATH)} alt="lock"/>
             </div>
         </div>
         <footer>
