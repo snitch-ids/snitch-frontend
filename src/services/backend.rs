@@ -34,7 +34,7 @@ pub fn register_user(register_request: &RegisterRequest) {
         let url = format!("{BACKEND_URL}/register");
 
         let msg = format!("calling url {url}");
-        log_1(&msg.to_string().into());
+        log_1(&msg.into());
 
         let payload = to_string(&request).unwrap();
         let response = Request::post(&url)
@@ -126,7 +126,7 @@ pub fn authenticated() -> bool {
 pub struct MessageBackend {
     pub hostname: String,
     pub title: String,
-    pub content: String,
+    pub body: String,
     pub timestamp: String,
 }
 

@@ -1,3 +1,4 @@
+use web_sys::console::log_1;
 use yew::prelude::*;
 
 use yew::{function_component, html, use_effect_with, use_state, Html};
@@ -21,7 +22,7 @@ pub fn MessageList(props: &Props) -> Html {
         use_effect_with(props.hostname.clone(), move |_| {
             let messages = messages.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_messages = request_messages(&hostname).await.unwrap_or_default();
+                let fetched_messages = request_messages(&hostname).await.unwrap();
                 messages.set(fetched_messages);
             });
             || ()
